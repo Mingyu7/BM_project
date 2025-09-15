@@ -136,3 +136,44 @@ a:hover {
     font-size: 0.85rem;
     color: #999;
 }
+
+/* Announcement Page Styles */
+.announcement-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.announcement-table a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.announcement-table a:hover {
+    color: #8D6E63;
+    text-decoration: underline;
+}
+
+/* Announcement Detail Page Styles */
+.announcement-detail-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.announcement-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.announcement-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+.announcement-content {
+    line-height: 1.8;
+    min-height: 200px;
+}
+
