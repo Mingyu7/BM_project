@@ -1,12 +1,68 @@
 {% extends 'properties/base.html' %}
-
-{% block title %}회원가입{% endblock %}
+{% load static %}
 
 {% block content %}
-    <h2>회원가입</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">가입하기</button>
-    </form>
+<div class="login-bg"></div>
+<div class="container login-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-light">
+                    <h2 class="text-center text-dark">회원가입</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.name.label }}</label>
+                            {{ form.name }}
+                            {{ form.name.errors }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.username.label }}</label>
+                            {{ form.username }}
+                            {{ form.username.errors }}
+                            <div class="form-text">{{ form.username.help_text }}</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.password1.label }}</label>
+                            {{ form.password1 }}
+                            {{ form.password1.errors }}
+                            <div class="form-text">{{ form.password1.help_text|safe }}</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.password2.label }}</label>
+                            {{ form.password2 }}
+                            {{ form.password2.errors }}
+                            <div class="form-text">{{ form.password2.help_text }}</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">휴대폰 번호</label>
+                            <input type="text" class="form-control" id="phone_number" placeholder="- 없이 입력">
+                        </div>
+
+                        <div class="form-check mb-3">
+                            {{ form.terms_agreement }}
+                            <label class="form-check-label">{{ form.terms_agreement.label }}</label>
+                            {{ form.terms_agreement.errors }}
+                        </div>
+                        
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary">가입하기</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.body.classList.add('login-page-body');
+</script>
 {% endblock %}
