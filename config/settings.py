@@ -27,11 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['98.88.16.169', 'localhost', '127.0.0.1']
 
-# 네이버 뉴스 api에 필요한 NAVER_CLIENT_ID , NAVER_CLIENT_SECRET
-NAVER_CLIENT_ID = "_sPRdsORONK7jVxSwhvT"
-NAVER_CLIENT_SECRET = "8_scfrRsg2"
-
-
 # Application definition
 
 INSTALLED_APPS = [
