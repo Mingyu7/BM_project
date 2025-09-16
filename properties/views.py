@@ -53,6 +53,9 @@ def my_page(request):
 def favorites(request):
     return render(request, 'properties/favorites.html')
 
+#pip show requests 아무것도 안뜨면
+#pip install requests 설치
+#뉴스 api연동으로 최근 일주일 기사 9개 가져와 news.html로 넘기기
 def news(request, iso_date=None):
     url = "https://newsapi.org/v2/everything"
 
@@ -66,7 +69,6 @@ def news(request, iso_date=None):
         "to": today
     }
 
-    context = {}
     try:
         response = requests.get(url, params=params)
         data = response.json()  # 전체 dict
@@ -81,6 +83,7 @@ def news(request, iso_date=None):
 
         top_news = sorted_news[:9]
 
+        context = {}
         context = {
             "news_list": [
                 {
@@ -94,10 +97,8 @@ def news(request, iso_date=None):
                 for n in top_news
             ]
         }
-
     except Exception as e:
         print("News API Error:", e)
-
     return render(request, 'properties/news.html', context)
 
 
