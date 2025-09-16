@@ -177,3 +177,18 @@ a:hover {
     min-height: 200px;
 }
 
+/* News Card Styles */
+.news-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.news-card .card-text {
+    flex-grow: 1;
+}
+
+.news-card .card-img-top {
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+}
+
