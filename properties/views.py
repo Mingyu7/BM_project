@@ -58,5 +58,8 @@ def weather(request):
 def announcements(request):
     return render(request, 'properties/announcements.html')
 
+def announcement_detail(request):
+    return render(request, 'properties/announcement_detail.html')
+
 def map(request):
     return render(request, 'properties/map.html')
