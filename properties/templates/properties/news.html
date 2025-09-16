@@ -16,7 +16,7 @@
     <div class="row">
 
         {% for item in news_list %}
-            <div class="col-md-4 mb-4" onclick="location.replace( {{ item.url }} ) " style="cursor:pointer;">
+            <div class="col-md-4 mb-4" onclick="window.open('{{ item.url }}')" style="cursor:pointer;">
                 <div class="card h-100 news-card">
                     {% if item.image %}
                     <img src="{{ item.image }}" class="card-img-top" alt="News Image">
