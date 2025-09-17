@@ -17,62 +17,93 @@ WEATHER_ICON_MAP = {
     "50d": "fas fa-smog", "50n": "fas fa-smog",
 }
 
-def get_weather_data():
-    """OpenWeatherMap One Call API 3.0에서 날씨 정보를 가져옵니다."""
-    api_key = 'f3bc0fab5a87054b1b7f4499c7fcd511' # API 키를 직접 입력합니다.
+def get_weather_data(cities_to_fetch=None):
+    """OpenWeatherMap API에서 현재 날씨 정보를 가져옵니다."""
+    api_key = 'f3bc0fab5a87054b1b7f4499c7fcd511'  # settings.py 또는 환경 변수에서 가져오는 것을 권장합니다.
     if not api_key:
         return []
 
-    # 도시별 위도, 경도 정보
-    cities = {
-        '서울': {'lat': 37.5665, 'lon': 126.9780},
-        '부산': {'lat': 35.1796, 'lon': 129.0756},
-        '대구': {'lat': 35.8714, 'lon': 128.6014},
-        '인천': {'lat': 37.4563, 'lon': 126.7052},
-        '광주': {'lat': 35.1595, 'lon': 126.8526},
-    }
+    # 조회할 전체 도시 목록 (영문 이름, 한글 이름, 좌표)
+    all_cities = [
+        {'en': 'Seoul', 'kr': '서울', 'top': '18%', 'left': '33%'},
+        {'en': 'Incheon', 'kr': '인천', 'top': '22%', 'left': '22%'},
+        {'en': 'Chuncheon', 'kr': '춘천', 'top': '12%', 'left': '45%'},
+        {'en': 'Gangneung', 'kr': '강릉', 'top': '15%', 'left': '68%'},
+        {'en': 'Suwon', 'kr': '수원', 'top': '28%', 'left': '32%'},
+        {'en': 'Cheongju', 'kr': '청주', 'top': '38%', 'left': '45%'},
+        {'en': 'Cheonan', 'kr': '천안', 'top': '33%', 'left': '38%'},
+        
+        {'en': 'Andong', 'kr': '안동', 'top': '40%', 'left': '65%'},
+        {'en': 'Pohang', 'kr': '포항', 'top': '50%', 'left': '80%'},
+        {'en': 'Daejeon', 'kr': '대전', 'top': '48%', 'left': '40%'},
+        {'en': 'Jeonju', 'kr': '전주', 'top': '60%', 'left': '35%'},
+        {'en': 'Daegu', 'kr': '대구', 'top': '60%', 'left': '65%'},
+        {'en': 'Gwangju', 'kr': '광주', 'top': '73%', 'left': '30%'},
+        {'en': 'Mokpo', 'kr': '목포', 'top': '80%', 'left': '20%'},
+        {'en': 'Yeosu', 'kr': '여수', 'top': '83%', 'left': '48%'},
+        {'en': 'Jeju', 'kr': '제주', 'top': '92%', 'left': '25%'},
+        {'en': 'Busan', 'kr': '부산', 'top': '70%', 'left': '75%'},
+        {'en': 'Ulsan', 'kr': '울산', 'top': '62%', 'left': '82%'},
+    ]
+
+    # 조회할 도시 목록 결정
+    cities_to_process = all_cities
+    if cities_to_fetch:
+        cities_to_process = [city for city in all_cities if city['kr'] in cities_to_fetch]
+
     weather_list = []
 
-    for city_name, coords in cities.items():
-        lat = coords['lat']
-        lon = coords['lon']
-        # One Call API 3.0 URL
-        url = f"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude=minutely,hourly,daily,alerts&appid={api_key}&units=metric&lang=kr"
-        
+    for city in cities_to_process:
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={city['en']}&appid={api_key}&units=metric&lang=kr"
+
         try:
             response = requests.get(url, timeout=5)
             response.raise_for_status()
             data = response.json()
 
-            current_weather = data.get('current', {})
-            if not current_weather:
-                raise requests.exceptions.RequestException("API 응답에 'current' 키가 없습니다.")
-
-            weather_info = current_weather.get('weather', [{}])[0]
+            main_weather = data.get('main', {})
+            weather_info = data.get('weather', [{}])[0]
+            
+            temp = main_weather.get('temp')
+            description = weather_info.get('description')
             icon_code = weather_info.get('icon')
             icon_class = WEATHER_ICON_MAP.get(icon_code, "fas fa-question-circle")
 
-            weather_list.append({
-                'location': city_name,
-                'temp': f"{current_weather.get('temp', 'N/A'):.1f}°C",
-                'condition': weather_info.get('description', '정보 없음'),
-                'icon': icon_class,
-            })
+            if temp is not None and description:
+                weather_data = {
+                    'location': city['kr'],
+                    'temp': f"{temp:.0f}°",
+                    'condition': description,
+                    'icon': icon_class,
+                }
+                # 지도 페이지를 위해 좌표 정보 추가
+                if not cities_to_fetch:
+                    weather_data['top'] = city['top']
+                    weather_data['left'] = city['left']
+                weather_list.append(weather_data)
+            else:
+                raise requests.exceptions.RequestException(f"Incomplete data for {city['kr']}")
+
         except requests.exceptions.RequestException as e:
-            print(f"Error fetching weather for {city_name}: {e}")
-            weather_list.append({
-                'location': city_name,
+            print(f"Error fetching weather for {city['kr']}: {e}")
+            error_data = {
+                'location': city['kr'],
                 'temp': 'N/A',
                 'condition': '정보 없음',
                 'icon': 'fas fa-exclamation-circle',
-            })
+            }
+            if not cities_to_fetch:
+                error_data['top'] = city['top']
+                error_data['left'] = city['left']
+            weather_list.append(error_data)
+            
     return weather_list
 
 def property_list(request):
     properties = Property.objects.order_by('-id')[:6]
 
     # 더미 데이터 대신 실제 날씨 데이터 가져오기
-    weather_list = get_weather_data()
+    weather_list = get_weather_data(cities_to_fetch=['서울', '인천', '수원', '천안', '대전'])
 
     # (기존 더미 데이터는 여기서 삭제됩니다)
     dummy_news = [
