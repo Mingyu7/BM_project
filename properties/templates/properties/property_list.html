@@ -86,10 +86,11 @@
         <div class="col-md-4">
             <div class="info-section">
                 <h4>오늘의 날씨</h4>
-                <ul>
+                <ul class="list-unstyled">
                     {% for item in weather_list %}
-                    <li>
-                        <a href="#">{{ item.location }}: {{ item.temp }}, {{ item.condition }}</a>
+                    <li class="d-flex align-items-center mb-2">
+                        <i class="{{ item.icon }} fa-fw me-2 text-muted"></i>
+                        <span>{{ item.location }}: {{ item.temp }}, {{ item.condition }}</span>
                     </li>
                     {% endfor %}
                 </ul>
