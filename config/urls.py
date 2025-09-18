@@ -7,8 +7,9 @@ from properties import views as properties_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', properties_views.property_list, name='home'),  # Set home page to property list
+    path('properties/', include('properties.urls')),  # 리스트 & 상세 페이지
     path('accounts/', include('accounts.urls')),
-    path('properties/', include('properties.urls', namespace='properties')),
+
 ]
 
 if settings.DEBUG:
