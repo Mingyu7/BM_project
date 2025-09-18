@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', properties_views.property_list, name='home'),  # Set home page to property list
     path('accounts/', include('accounts.urls')),
-    path('', include('properties.urls')),  # Include other property urls
+    path('properties/', include('properties.urls', namespace='properties')),
 ]
 
 if settings.DEBUG:
