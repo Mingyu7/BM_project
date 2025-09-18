@@ -51,4 +51,3 @@ if __name__ == '__main__':
 #gggggg
 #김승식 두번째 clone했다.
 #김태관 두번째 clone했다.
-#김태관 세번째 clone했다;;;
