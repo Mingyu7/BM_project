@@ -1,9 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.conf import settings
 from .models import Property
+
+import datetime
 import requests
-import json
-from datetime import datetime, date, timedelta
 
 # --- OpenWeatherMap API 아이콘 매핑 ---
 # OpenWeatherMap에서 제공하는 날씨 아이콘 코드를 Font Awesome 아이콘 클래스로 변환합니다.
@@ -18,7 +17,6 @@ WEATHER_ICON_MAP = {
     "13d": "far fa-snowflake", "13n": "far fa-snowflake",
     "50d": "fas fa-smog", "50n": "fas fa-smog",
 }
-
 
 def get_weather_data(cities_to_fetch=None):
     """OpenWeatherMap API에서 현재 날씨 정보를 가져옵니다."""
@@ -35,7 +33,7 @@ def get_weather_data(cities_to_fetch=None):
         {'en': 'Suwon', 'kr': '수원', 'top': '28%', 'left': '32%'},
         {'en': 'Cheongju', 'kr': '청주', 'top': '38%', 'left': '45%'},
         {'en': 'Cheonan', 'kr': '천안', 'top': '33%', 'left': '38%'},
-
+        
         {'en': 'Andong', 'kr': '안동', 'top': '40%', 'left': '65%'},
         {'en': 'Pohang', 'kr': '포항', 'top': '50%', 'left': '80%'},
         {'en': 'Daejeon', 'kr': '대전', 'top': '48%', 'left': '40%'},
@@ -66,7 +64,7 @@ def get_weather_data(cities_to_fetch=None):
 
             main_weather = data.get('main', {})
             weather_info = data.get('weather', [{}])[0]
-
+            
             temp = main_weather.get('temp')
             description = weather_info.get('description')
             icon_code = weather_info.get('icon')
@@ -99,8 +97,14 @@ def get_weather_data(cities_to_fetch=None):
                 error_data['top'] = city['top']
                 error_data['left'] = city['left']
             weather_list.append(error_data)
-
+            
     return weather_list
+
+#뉴스 api
+import requests
+import json
+from datetime import datetime, date, timedelta
+from django.conf import settings
 
 
 def property_list(request):
@@ -128,29 +132,25 @@ def property_list(request):
     context = {
         'properties': properties,
         'news_list': dummy_news,
-        'weather_list': weather_list,  # 실제 날씨 데이터로 교체
+        'weather_list': weather_list, # 실제 날씨 데이터로 교체
         'announcements_list': dummy_announcements,
     }
     return render(request, 'properties/property_list.html', context)
-
 
 def property_detail(request, pk):
     property = get_object_or_404(Property, pk=pk)
     return render(request, 'properties/property_detail.html', {'property': property})
 
-
 # ... (이하 다른 뷰들은 그대로 유지) ...
 def my_page(request):
     return render(request, 'properties/my_page.html')
 
-
 def favorites(request):
     return render(request, 'properties/favorites.html')
 
-
-# pip show requests 아무것도 안뜨면
-# pip install requests 설치
-# 뉴스 api연동으로 최근 일주일 기사 9개 가져와 news.html로 넘기기
+#pip show requests 아무것도 안뜨면
+#pip install requests 설치
+#뉴스 api연동으로 최근 일주일 기사 9개 가져와 news.html로 넘기기
 def news(request, iso_date=None):
     url = "https://newsapi.org/v2/everything"
 
@@ -172,7 +172,7 @@ def news(request, iso_date=None):
         # publishedAt 기준 내림차순 정렬
         sorted_news = sorted(
             articles,
-            key=lambda x: datetime.strptime(x.get("publishedAt", today + "T00:00:00Z"), "%Y-%m-%dT%H:%M:%SZ"),
+            key=lambda x: datetime.strptime(x.get("publishedAt", today+"T00:00:00Z"), "%Y-%m-%dT%H:%M:%SZ"),
             reverse=True
         )
 
@@ -184,8 +184,7 @@ def news(request, iso_date=None):
                 {
                     "title": n.get("title", ""),
                     "description": n.get("description", ""),
-                    "published_date": datetime.strptime(n.get("publishedAt", today + "T00:00:00Z"),
-                                                        "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d"),
+                    "published_date": datetime.strptime(n.get("publishedAt", today + "T00:00:00Z"), "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d"),
                     "author": n.get("author", ""),
                     "image": n.get("urlToImage", ""),
                     "url": n.get("url", "")
@@ -198,19 +197,17 @@ def news(request, iso_date=None):
     return render(request, 'properties/news.html', context)
 
 
+
 def weather(request):
     # 이 뷰도 실제 날씨 데이터를 보여주도록 수정할 수 있습니다.
     context = {'weather_list': get_weather_data()}
     return render(request, 'properties/weather.html', context)
 
-
 def announcements(request):
     return render(request, 'properties/announcements.html')
 
-
 def announcement_detail(request):
     return render(request, 'properties/announcement_detail.html')
-
 
 def map(request):
     return render(request, 'properties/map.html')
