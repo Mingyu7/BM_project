@@ -21,24 +21,24 @@ def fetch_weather(cities_to_fetch=None):
         return []
 
     all_cities = [
-        {'en': 'Seoul', 'kr': '서울', 'top': '18%', 'left': '33%'},
-        {'en': 'Incheon', 'kr': '인천', 'top': '22%', 'left': '22%'},
-        {'en': 'Chuncheon', 'kr': '춘천', 'top': '12%', 'left': '45%'},
-        {'en': 'Gangneung', 'kr': '강릉', 'top': '15%', 'left': '68%'},
-        {'en': 'Suwon', 'kr': '수원', 'top': '28%', 'left': '32%'},
-        {'en': 'Cheongju', 'kr': '청주', 'top': '38%', 'left': '45%'},
-        {'en': 'Cheonan', 'kr': '천안', 'top': '33%', 'left': '38%'},
-        {'en': 'Andong', 'kr': '안동', 'top': '40%', 'left': '65%'},
-        {'en': 'Pohang', 'kr': '포항', 'top': '50%', 'left': '80%'},
-        {'en': 'Daejeon', 'kr': '대전', 'top': '48%', 'left': '40%'},
-        {'en': 'Jeonju', 'kr': '전주', 'top': '60%', 'left': '35%'},
-        {'en': 'Daegu', 'kr': '대구', 'top': '60%', 'left': '65%'},
-        {'en': 'Gwangju', 'kr': '광주', 'top': '73%', 'left': '30%'},
-        {'en': 'Mokpo', 'kr': '목포', 'top': '80%', 'left': '20%'},
-        {'en': 'Yeosu', 'kr': '여수', 'top': '83%', 'left': '48%'},
-        {'en': 'Jeju', 'kr': '제주', 'top': '92%', 'left': '25%'},
-        {'en': 'Busan', 'kr': '부산', 'top': '70%', 'left': '75%'},
-        {'en': 'Ulsan', 'kr': '울산', 'top': '62%', 'left': '82%'},
+        {'en': 'Seoul', 'kr': '서울', 'top': '83%', 'left': '43%'},  #100에 가까울수록 아래로 100에 가까울수록 오른쪽으로 붙어
+        {'en': 'Incheon', 'kr': '인천', 'top': '83%', 'left': '40%'}, #ㅇㅋ
+        {'en': 'Chuncheon', 'kr': '춘천', 'top': '74%', 'left': '49%'}, #ㅇㅋ
+        {'en': 'Gangneung', 'kr': '강릉', 'top': '83%', 'left': '60%'}, #ㅇㅋ
+        {'en': 'Suwon', 'kr': '수원', 'top': '90%', 'left': '43%'}, # ㅇㅋ
+        {'en': 'Cheongju', 'kr': '청주', 'top': '107%', 'left': '47%'}, #ㅇㅋ
+        {'en': 'Cheonan', 'kr': '천안', 'top': '101%', 'left': '44%'}, #ㅇㅋ
+        {'en': 'Andong', 'kr': '안동', 'top': '111%', 'left': '59%'}, #ㅇㅋ
+        {'en': 'Pohang', 'kr': '포항', 'top': '120%', 'left': '65%'}, #ㅇㅋ
+        {'en': 'Daejeon', 'kr': '대전', 'top': '113%', 'left': '45%'}, #ㅇㅋ
+        {'en': 'Jeonju', 'kr': '전주', 'top': '123%', 'left': '43%'},
+        {'en': 'Daegu', 'kr': '대구', 'top': '123%', 'left': '57%'}, # ㅇㅋ
+        {'en': 'Gwangju', 'kr': '광주', 'top': '140%', 'left': '39%'}, #ㅇㅋ
+        {'en': 'Mokpo', 'kr': '목포', 'top': '148%', 'left': '36%'},# ㅇㅋ
+        {'en': 'Yeosu', 'kr': '여수', 'top': '150%', 'left': '48%'}, #ㅇㅋㅉ
+        {'en': 'Jeju', 'kr': '제주', 'top': '177%', 'left': '37%'}, # ㅇㅋ
+        {'en': 'Busan', 'kr': '부산', 'top': '141%', 'left': '62%'}, #ㅇㅋ
+        {'en': 'Ulsan', 'kr': '울산', 'top': '133%', 'left': '64%'}, # ㅇㅋ
     ]
 
     cities = all_cities if not cities_to_fetch else [c for c in all_cities if c['kr'] in cities_to_fetch]
