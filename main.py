@@ -49,3 +49,4 @@ if __name__ == '__main__':
 # ㅈㄴ어렵네;;
 #sodapop
 #gggggg
+#김승식 두번째 clone했다.
