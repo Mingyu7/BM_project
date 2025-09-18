@@ -2,7 +2,21 @@
 {% load static %}
 
 {% block content %}
-<div class="login-bg"></div>
+<style>
+body {
+    background-image: url("{% static 'images/배경 이미지2.jpg' %}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+.card {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+main.container {
+    background-color: transparent;
+}
+</style>
 <div class="container login-container">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -63,8 +77,6 @@
 </div>
 
 <script>
-    document.body.classList.add('login-page-body');
-
     document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll("input").forEach(el => {
             el.setAttribute("autocomplete", "off");
