@@ -7,8 +7,8 @@ import xml.etree.ElementTree as ET
 
 
 def weather(request):
+    return render(request, "properties/weather.html", name=weather())
 
-    return render(request, "properties/weather.html",name=weather())
 
 def property_list(request):
     properties = Property.objects.order_by('-id')[:6]  # Show latest 6 properties

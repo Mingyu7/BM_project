@@ -40,9 +40,12 @@ if __name__ == '__main__':
 # 무야호
 # 이민규
 # 김기원
-# 김승식 # sikboyyy
+# 김승식
+# sikboyyy
 # 오 됐노!
 # 김정학
 # 오 나도 됐다 무야호~!
 # 하시
 # ㅈㄴ어렵네;;
+#sodapop
+#gggggg
