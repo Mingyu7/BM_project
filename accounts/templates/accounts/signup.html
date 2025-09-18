@@ -64,5 +64,11 @@
 
 <script>
     document.body.classList.add('login-page-body');
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("input").forEach(el => {
+            el.setAttribute("autocomplete", "off");
+        });
+    });
 </script>
 {% endblock %}
