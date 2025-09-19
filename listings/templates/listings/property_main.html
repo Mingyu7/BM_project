@@ -86,8 +86,7 @@
             <ul class="list-unstyled">
                 {% for item in announcements_list %}
                 <li>
-                    <a href="{% url 'announcements:announcement_detail' item.pk %}">{{ item.title|truncatechars:25
-                        }}</a>
+                    <a href="{% url 'announcements:announcement_detail' item.pk %}">{{ item.title|truncatechars:25 }}</a>
                     <span class="date">{{ item.date|date:"m.d" }}</span>
                 </li>
                 {% endfor %}
