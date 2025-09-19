@@ -17,18 +17,7 @@
     </div>
 </div>
 
-<div class="region-nav my-4">
-    <ul class="nav nav-pills justify-content-center">
-        <li class="nav-item">
-            <a class="nav-link {% if not selected_region %}active{% endif %}" href="{% url 'listings:home' %}">전체</a>
-        </li>
-        {% for region_value, region_display in regions %}
-        <li class="nav-item">
-            <a class="nav-link {% if selected_region == region_value %}active{% endif %}" href="?region={{ region_value }}">{{ region_display }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
+
 
 <h2>매물 목록</h2>
 <div class="property-list grid grid-cols-3 gap-4">
