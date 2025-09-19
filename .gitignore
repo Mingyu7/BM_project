@@ -37,3 +37,19 @@ Thumbs.db
 *.sqlite3
 *.db
 *.pyc
+# Python cache
+__pycache__/
+*.pyc
+
+# SQLite database
+db.sqlite3
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE settings
+.idea/
+*.iml
+
+
