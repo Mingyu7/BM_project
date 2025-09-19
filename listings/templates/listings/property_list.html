@@ -9,12 +9,25 @@
         <h1 class="display-5 fw-bold">어떤 집을 찾고 계세요?</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">원룸, 투룸, 아파트, 오피스텔까지. 원하는 매물을 찾아보세요.</p>
-            <form class="input-group input-group-lg mb-3" action="{% url 'listings:home' %}" method="get">
-                <input type="text" class="form-control" placeholder="지역, 지하철역, 단지명으로 검색" aria-label="검색어" name="q">
-                <button class="btn btn-primary" type="submit">검색</button>
+            <button class="btn btn-primary" type="submit">검색</button>
             </form>
+            
+        </div>
         </div>
     </div>
+</div>
+
+<div class="region-nav my-4">
+    <ul class="nav nav-pills justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link {% if not selected_region %}active{% endif %}" href="{% url 'listings:home' %}">전체</a>
+        </li>
+        {% for region_value, region_display in regions %}
+        <li class="nav-item">
+            <a class="nav-link {% if selected_region == region_value %}active{% endif %}" href="?region={{ region_value }}">{{ region_display }}</a>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 
 <h2>매물 목록</h2>
