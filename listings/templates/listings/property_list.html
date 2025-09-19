@@ -38,56 +38,5 @@
         <p>등록된 매물이 없습니다.</p>
         {% endfor %}
     </div>
-<<<<<<< HEAD
-=======
-    {% empty %}
-    <p>등록된 매물이 없습니다.</p>
-    {% endfor %}
-</div>
-
-<div class="row g-5">
-    <div class="col-md-4">
-        <div class="info-section">
-            <h4><a href="{% url 'announcements:news' %}">부동산 뉴스</a></h4>
-            <ul class="list-unstyled">
-                {% for item in news_list %}
-                <li>
-                    <a href="#">{{ item.title|truncatechars:25 }}</a>
-                    <span class="date">{{ item.date|date:"m.d" }}</span>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="info-section">
-            <h4><a href="{% url 'weather:weather' %}">오늘의 날씨</a></h4>
-            <ul class="list-unstyled">
-                {% for item in weather_list %}
-                <li class="d-flex align-items-center mb-2">
-                    <i class="{{ item.icon }} fa-fw me-2 text-muted"></i>
-                    <span>{{ item.location }}: {{ item.temp }}, {{ item.condition }}</span>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="info-section">
-            <h4><a href="{% url 'announcements:announcements' %}">공지사항</a></h4>
-            <ul class="list-unstyled">
-                {% for item in announcements_list %}
-                <li>
-                    <a href="{% url 'announcements:announcement_detail' item.pk %}">{{ item.title }}</a>
-                    <span class="date">{{ item.created_at|date:"m.d" }}</span>
-                </li>
-                {% empty %}
-                <li>공지사항이 없습니다.</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-</div>
->>>>>>> 25cc832a5e9f607f3748accc0875bcf78ecc5628
 </div>
 {% endblock %}
