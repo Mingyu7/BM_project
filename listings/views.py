@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from listings.models import Property
 from weather import services as weather_services
 from announcements import services as announcement_services
+from announcements.models import Announcement # Import Announcement model
 from .forms import PropertyForm
 from django.contrib.auth.decorators import login_required
 
@@ -13,18 +14,15 @@ def property_list(request):
     properties = Property.objects.order_by('-id')[:6]
     weather_list = weather_services.fetch_weather(cities_to_fetch=['서울', '인천', '수원', '천안', '대전'])
     news_list = announcement_services.fetch_news()
-
-    # 실제 DB 연동이 필요하지만, 임시 데이터 사용
-    dummy_announcements = [
-        {'title': '[공지] 추석 연휴 고객센터 운영 안내', 'date': '2025-09-10', 'pk': 1},
-        {'title': '[업데이트] 새로운 매물 필터 기능 추가', 'date': '2025-09-05', 'pk': 2},
-    ]
+    
+    # Fetch top 5 announcements
+    announcements_list = Announcement.objects.order_by('-created_at')[:5]
 
     context = {
         'properties': properties,
         'weather_list': weather_list,
         'news_list': news_list,
-        'announcements_list': dummy_announcements,
+        'announcements_list': announcements_list,
     }
     return render(request, 'listings/property_list.html', context)
 

@@ -1,0 +1,19 @@
+{% extends 'listings/base.html' %}
+
+{% block title %}
+    {% if form.instance.pk %}공지사항 수정{% else %}공지사항 작성{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card p-4 shadow-sm">
+        <h2 class="mb-4">{% if form.instance.pk %}공지사항 수정{% else %}공지사항 작성{% endif %}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">저장</button>
+            <a href="{% url 'announcements:announcements' %}" class="btn btn-secondary">취소</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
