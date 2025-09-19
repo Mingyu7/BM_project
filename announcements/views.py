@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from . import services
+from .models import Announcement # Import Announcement model
 
 def news(request):
     context = {
@@ -8,8 +9,15 @@ def news(request):
     return render(request, 'announcements/news.html', context)
 
 def announcements(request):
-    return render(request, 'announcements/announcements.html')
+    announcements_list = Announcement.objects.order_by('-created_at')
+    context = {
+        'announcements_list': announcements_list
+    }
+    return render(request, 'announcements/announcements.html', context)
 
 def announcement_detail(request, pk):
-    # 실제 구현 시 DB에서 공지사항을 가져와야 함
-    return render(request, 'announcements/announcement_detail.html')
+    announcement = get_object_or_404(Announcement, pk=pk)
+    context = {
+        'announcement': announcement
+    }
+    return render(request, 'announcements/announcement_detail.html', context)

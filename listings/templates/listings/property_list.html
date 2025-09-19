@@ -78,8 +78,10 @@
                 <li>
                     <a href="{% url 'announcements:announcement_detail' item.pk %}">{{ item.title|truncatechars:25
                         }}</a>
-                    <span class="date">{{ item.date|date:"m.d" }}</span>
+                    <span class="date">{{ item.created_at|date:"m.d" }}</span>
                 </li>
+                {% empty %}
+                <li>공지사항이 없습니다.</li>
                 {% endfor %}
             </ul>
         </div>
