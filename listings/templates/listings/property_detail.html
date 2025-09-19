@@ -8,11 +8,12 @@
     <div class="row">
         <div class="col-md-6">
             {% if property.image %}
-                <img src="{{ property.image.url }}" class="img-fluid rounded" alt="{{ property.title }}">
+            <img src="{{ property.image.url }}" class="img-fluid rounded" alt="{{ property.title }}">
             {% else %}
-                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 400px;">
-                    이미지 없음
-                </div>
+            <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                 style="height: 600px;">
+                이미지 없음
+            </div>
             {% endif %}
         </div>
 
@@ -21,16 +22,24 @@
             <p><strong>지역:</strong> {{ property.region }}</p>
             <p><strong>작성자:</strong> {{ property.author.username }}</p>
             {% if property.latitude and property.longitude %}
-                <p><strong>위치:</strong> 위도 {{ property.latitude }}, 경도 {{ property.longitude }}</p>
+            <p><strong>위치:</strong> 위도 {{ property.latitude }}, 경도 {{ property.longitude }}</p>
             {% endif %}
             <p><strong>설명:</strong></p>
             <p>{{ property.description|linebreaks }}</p>
+            <p>가격:
+                {% if property.price %}
+                {{ property.price|intcomma }} 원
+                {% else %}
+                가격 미정
+                {% endif %}
+            </p>
             <p><strong>등록일:</strong> {{ property.created_at|date:"Y.m.d" }}</p>
 
             {% if property.latitude and property.longitude %}
-                <a href="https://www.google.com/maps/search/?api=1&query={{ property.latitude }},{{ property.longitude }}" target="_blank" class="btn btn-outline-primary mt-3">
-                    지도에서 보기
-                </a>
+            <a href="https://www.google.com/maps/search/?api=1&query={{ property.latitude }},{{ property.longitude }}"
+               target="_blank" class="btn btn-outline-primary mt-3">
+                지도에서 보기
+            </a>
             {% endif %}
         </div>
     </div>

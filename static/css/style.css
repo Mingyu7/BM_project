@@ -212,3 +212,48 @@ a:hover {
     margin: 5px 0 0 0;
 }
 
+/* Button Styles */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-2px);
+}
+
+/* Property Form Page */
+.property-form-container {
+    background-color: #f8f9fa;
+}
+
+.property-form-container .form-label {
+    font-weight: 500;
+}
+
+/* Region Navigation */
+.region-nav .nav-pills .nav-link {
+    color: #8D6E63;
+    border: 1px solid #8D6E63;
+    margin: 0 5px;
+    transition: all 0.3s;
+}
+
+.region-nav .nav-pills .nav-link.active {
+    background-color: #8D6E63;
+    color: white;
+}
+
+.region-nav .nav-pills .nav-link:hover {
+    background-color: #6D4C41;
+    color: white;
+}
+
+
+
+
