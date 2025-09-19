@@ -34,7 +34,7 @@ def fetch_weather(cities_to_fetch=None):
         {'en': 'Daegu', 'kr': '대구', 'top': '123%', 'left': '57%'}, # ㅇㅋ
         {'en': 'Gwangju', 'kr': '광주', 'top': '140%', 'left': '39%'}, #ㅇㅋ
         {'en': 'Mokpo', 'kr': '목포', 'top': '148%', 'left': '36%'},# ㅇㅋ
-        {'en': 'Yeosu', 'kr': '여수', 'top': '150%', 'left': '48%'}, #ㅇㅋㅉ
+        {'en': 'Yeosu', 'kr': '여수', 'top': '150%', 'left': '48%'}, #ㅇㅋ
         {'en': 'Jeju', 'kr': '제주', 'top': '177%', 'left': '37%'}, # ㅇㅋ
         {'en': 'Busan', 'kr': '부산', 'top': '141%', 'left': '62%'}, #ㅇㅋ
         {'en': 'Ulsan', 'kr': '울산', 'top': '133%', 'left': '64%'}, # ㅇㅋ

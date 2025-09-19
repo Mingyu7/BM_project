@@ -11,7 +11,7 @@
             <img src="{{ property.image.url }}" class="img-fluid rounded" alt="{{ property.title }}">
             {% else %}
             <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                 style="height: 600px;">
+                 style="height: 700px;">
                 이미지 없음
             </div>
             {% endif %}
@@ -40,6 +40,10 @@
                target="_blank" class="btn btn-outline-primary mt-3">
                 지도에서 보기
             </a>
+            {% endif %}
+            {% if user == property.author %}
+                <a href="{% url 'listings:property_update' property.pk %}" class="btn btn-primary mt-3">수정</a>
+                <a href="{% url 'listings:property_delete' property.pk %}" class="btn btn-danger mt-3">삭제</a>
             {% endif %}
         </div>
     </div>

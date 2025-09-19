@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from . import services
+from .models import Announcement
+from django.contrib.auth.decorators import login_required
+from .forms import AnnouncementForm
 
 def news(request):
     context = {
@@ -8,8 +11,38 @@ def news(request):
     return render(request, 'announcements/news.html', context)
 
 def announcements(request):
-    return render(request, 'announcements/announcements.html')
+    announcements_list = Announcement.objects.order_by('-created_at')
+    context = {
+        'announcements_list': announcements_list
+    }
+    return render(request, 'announcements/announcements.html', context)
 
 def announcement_detail(request, pk):
-    # 실제 구현 시 DB에서 공지사항을 가져와야 함
-    return render(request, 'announcements/announcement_detail.html')
+    announcement = get_object_or_404(Announcement, pk=pk)
+    context = {
+        'announcement': announcement
+    }
+    return render(request, 'announcements/announcement_detail.html', context)
+
+@login_required
+def announcement_create(request):
+    if not request.user.is_superuser:
+        return redirect('announcements:announcements')
+    if request.method == 'POST':
+        form = AnnouncementForm(request.POST)
+        if form.is_valid():
+            announcement = form.save(commit=False)
+            announcement.author = request.user
+            announcement.save()
+            return redirect('announcements:announcement_detail', pk=announcement.pk)
+    else:
+        form = AnnouncementForm()
+    context = {'form': form}
+    return render(request, 'announcements/announcement_form.html', context)
+
+@login_required
+def announcement_delete(request, pk):
+    announcement = get_object_or_404(Announcement, pk=pk)
+    if request.user.is_superuser:
+        announcement.delete()
+    return redirect('announcements:announcements')

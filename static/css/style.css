@@ -1,9 +1,19 @@
 /* General Body Styles */
 body {
     padding-top: 80px;
-    background-color: #ffffff; /* White background */
+    background-image: url('../images/background_notice.jpg'); /* User-specified background image */
+    background-size: cover;
+    background-attachment: fixed; /* Fixed background for parallax-like effect */
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #f8f9fa; /* Fallback background color */
     color: #333;
     font-family: 'Noto Sans KR', sans-serif;
+    position: relative; /* Needed for ::before pseudo-element */
+    z-index: 0; /* Ensure content is above overlay */
+    display: flex; /* Enable flexbox */
+    min-height: 100vh; /* Make body at least viewport height */
+    flex-direction: column; /* Stack children vertically */
 }
 
 /* Hero Section */
@@ -57,7 +67,12 @@ body {
 
 /* Main Content Area - simplified for white background */
 main.container {
-    padding: 2rem 0; /* Adjust padding for a cleaner look */
+    padding: 2rem; /* Adjust padding for a cleaner look */
+    flex-grow: 1; /* Allow main content to grow and push footer down */
+    background-color: #fff; /* Add white background to content area */
+    border-radius: 8px; /* Optional: Add some rounded corners */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Optional: Add a subtle shadow */
+    margin-bottom: 2rem; /* Add some space below the container */
 }
 
 /* Card Styles for property listings */
@@ -96,6 +111,23 @@ a:hover {
 }
 .border-bottom {
     border-bottom: none !important;
+}
+
+/* Region Navigation Styles */
+.region-nav .nav-pills .nav-link {
+    color: #8D6E63; /* Default text color for region links */
+}
+
+.region-nav .nav-pills .nav-link.active,
+.region-nav .nav-pills .nav-link:hover {
+    background-color: #BCAAA4; /* Light brown background for active/hover */
+    color: #FFFFFF; /* White text for active/hover for better contrast */
+    border-color: #BCAAA4; /* Match border color */
+}
+
+.region-nav .nav-pills .nav-link:hover {
+    background-color: #D7CCC8; /* Slightly lighter brown for hover */
+    color: #8D6E63; /* Primary brown text on hover */
 }
 
 /* New Section Styles for homepage */
@@ -212,14 +244,18 @@ a:hover {
     margin: 5px 0 0 0;
 }
 
-/* Button Styles */
-.btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-    color: white;
-    font-weight: 500;
-    transition: background-color 0.3s, transform 0.2s;
+
+body::before {
+    content: '';
+    position: fixed; /* Use fixed to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7); /* White overlay with 70% opacity */
+    z-index: -1; /* Place it behind the content but above the background image */
 }
+<<<<<<< HEAD
 
 .btn-success:hover {
     background-color: #218838;
@@ -254,6 +290,11 @@ a:hover {
     color: white;
 }
 
-
-
-
+.property-thumbnail {
+    width: 96px !important;  /* Equivalent to h-24 / w-24 */
+    height: 96px !important; /* Equivalent to h-24 / w-24 */
+    object-fit: cover !important;
+    border-radius: 0.25rem !important; /* Equivalent to rounded */
+}
+=======
+>>>>>>> 25cc832a5e9f607f3748accc0875bcf78ecc5628

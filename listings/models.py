@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import os
 
 class Property(models.Model):
     # 광역시/도 선택지 정의
@@ -34,6 +35,12 @@ class Property(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.region}) - {self.price if self.price else '가격 미정'}원"
+
+    def delete(self, *args, **kwargs):
+        if self.image:
+            if os.path.isfile(self.image.path):
+                os.remove(self.image.path)
+        super().delete(*args, **kwargs)
 
     class Meta:
         verbose_name = "Property"
