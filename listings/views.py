@@ -10,14 +10,7 @@ def property_list(request):
     메인 페이지 역할을 겸하는 매물 목록 페이지 뷰입니다.
     최신 매물, 날씨, 뉴스, 공지사항을 함께 제공합니다.
     """
-    region = request.GET.get('region')
-    if region:
-        properties = Property.objects.filter(region=region).order_by('-id')
-    else:
-        properties = Property.objects.order_by('-id')
-
-    regions = Property.REGION_CHOICES
-
+    properties = Property.objects.order_by('-id')[:6]
     weather_list = weather_services.fetch_weather(cities_to_fetch=['서울', '인천', '수원', '천안', '대전'])
     news_list = announcement_services.fetch_news()
 
@@ -29,8 +22,6 @@ def property_list(request):
 
     context = {
         'properties': properties,
-        'regions': regions,
-        'selected_region': region,
         'weather_list': weather_list,
         'news_list': news_list,
         'announcements_list': dummy_announcements,
