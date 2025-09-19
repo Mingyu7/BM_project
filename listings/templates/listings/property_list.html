@@ -9,13 +9,15 @@
         <h1 class="display-5 fw-bold">어떤 집을 찾고 계세요?</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">원룸, 투룸, 아파트, 오피스텔까지. 원하는 매물을 찾아보세요.</p>
-            <form class="input-group input-group-lg mb-3" action="{% url 'listings:home' %}" method="get">
-                <input type="text" class="form-control" placeholder="지역, 지하철역, 단지명으로 검색" aria-label="검색어" name="q">
-                <button class="btn btn-primary" type="submit">검색</button>
+            <button class="btn btn-primary" type="submit">검색</button>
             </form>
+            
+        </div>
         </div>
     </div>
 </div>
+
+
 
 <h2>매물 목록</h2>
 <div class="property-list grid grid-cols-3 gap-4">
@@ -76,10 +78,11 @@
             <ul class="list-unstyled">
                 {% for item in announcements_list %}
                 <li>
-                    <a href="{% url 'announcements:announcement_detail' item.pk %}">{{ item.title|truncatechars:25
-                        }}</a>
-                    <span class="date">{{ item.date|date:"m.d" }}</span>
+                    <a href="{% url 'announcements:announcement_detail' item.pk %}">{{ item.title }}</a>
+                    <span class="date">{{ item.created_at|date:"m.d" }}</span>
                 </li>
+                {% empty %}
+                <li>공지사항이 없습니다.</li>
                 {% endfor %}
             </ul>
         </div>
