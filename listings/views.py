@@ -5,6 +5,7 @@ from announcements import services as announcement_services
 from announcements.models import Announcement # Import Announcement model
 from .forms import PropertyForm
 from django.contrib.auth.decorators import login_required
+from bookmarks.models import Favorite # Import Favorite model for bookmarking
 
 def property_list(request):
     """
@@ -18,11 +19,16 @@ def property_list(request):
     # Fetch top 5 announcements
     announcements_list = Announcement.objects.order_by('-created_at')[:5]
 
+    bookmarked_properties = []
+    if request.user.is_authenticated:
+        bookmarked_properties = Favorite.objects.filter(user=request.user).values_list('property__id', flat=True)
+
     context = {
         'properties': properties,
         'weather_list': weather_list,
         'news_list': news_list,
         'announcements_list': announcements_list,
+        'bookmarked_properties': list(bookmarked_properties), # 템플릿에 전달
     }
     return render(request, 'listings/property_main.html', context)
 
@@ -32,8 +38,13 @@ def property_detail(request, pk):
     매물 상세 페이지 뷰입니다.
     """
     property_obj = get_object_or_404(Property, pk=pk)
+    is_bookmarked = False
+    if request.user.is_authenticated:
+        is_bookmarked = Favorite.objects.filter(user=request.user, property=property_obj).exists()
+
     context = {
         'property': property_obj,
+        'is_bookmarked': is_bookmarked, # 템플릿에 전달
     }
     return render(request, 'listings/property_detail.html', context)
 
@@ -80,6 +91,10 @@ def property_delete(request, pk):
     return render(request, 'listings/property_confirm_delete.html', {'property': property_obj})
 
 
+from django.contrib.auth.decorators import login_required
+from bookmarks.models import Favorite # Import Favorite model
+
+
 def property_index(request):
     region = request.GET.get('region')
     if region:
@@ -88,14 +103,19 @@ def property_index(request):
         properties = Property.objects.all().order_by('-id')
 
     regions = Property.REGION_CHOICES
+    
+    bookmarked_properties = []
+    if request.user.is_authenticated:
+        bookmarked_properties = Favorite.objects.filter(user=request.user).values_list('property__id', flat=True)
 
     context = {
         'properties': properties,
         'regions': regions,
         'selected_region': region,
+        'bookmarked_properties': list(bookmarked_properties), # 템플릿에 전달
     }
 
-    return render(request, 'listings/property_index.html', context)
+    return render(request, 'listings/property_list.html', context)
 
 #''로 접속했을때 'listings'로 리다이렉트
 def myhome(request):
