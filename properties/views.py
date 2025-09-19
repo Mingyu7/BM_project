@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import CreateView
+
 from .models import Property
 from . import services # 서비스 레이어 import
 

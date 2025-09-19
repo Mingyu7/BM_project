@@ -17,80 +17,73 @@
     </div>
 </div>
 
-<div class="container">
-    <h2 class="h4 mb-3">매물 목록</h2>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5">
-        {% for property in properties %}
-        <div class="col">
-            <div class="card h-100">
-                <a href="{% url 'properties:property_detail' property.pk %}" class="stretched-link"></a>
-                {% if property.image %}
-                <img src="{{ property.image.url }}" class="card-img-top" alt="{{ property.title }}"
-                     style="height: 200px; object-fit: cover;">
-                {% else %}
-                <div class="d-flex align-items-center justify-content-center card-img-top bg-secondary text-white"
-                     style="height: 200px;">
-                    이미지 없음
-                </div>
-                {% endif %}
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title h6">{{ property.title }}</h5>
-                    <p class="card-text small text-truncate">{{ property.description|truncatewords:20 }}</p>
-                    <p class="card-text small">지역: {{ property.region }}</p>
-                    <h6 class="card-subtitle mt-auto fw-bold">{{ property.price|floatformat:"0"|intcomma }}원</h6>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <div class="col">
-            <div class="alert alert-secondary text-center" role="alert">
-                등록된 매물이 없습니다.
-            </div>
-        </div>
-        {% endfor %}
+<h2>매물 목록</h2>
+<div class="property-list grid grid-cols-3 gap-4">
+    {% for property in properties %}
+    <div class="property-card border rounded p-3 shadow">
+        {% if property.image %}
+        <img src="{{ property.image.url }}" alt="{{ property.title }}" class="w-full h-48 object-cover rounded">
+        {% endif %}
+        <h3 class="text-lg font-bold mt-2">{{ property.title }}</h3>
+        <p>{{ property.description|truncatewords:20 }}</p>
+        <p>지역: {{ property.region }}</p>
+        <p>위도: {{ property.latitude }}, 경도: {{ property.longitude }}</p>
+        <p>작성자: {{ property.author.username }}</p>
+        <p>가격:
+            {% if property.price %}
+            {{ property.price|intcomma }} 원
+            {% else %}
+            가격 미정
+            {% endif %}
+        </p>
+        <a href="{% url 'properties:property_detail' property.pk %}" class="text-blue-500">상세보기</a>
     </div>
+    {% empty %}
+    <p>등록된 매물이 없습니다.</p>
+    {% endfor %}
+</div>
 
-    <div class="row g-5">
-        <div class="col-md-4">
-            <div class="info-section">
-                <h4><a href="{% url 'properties:news' %}">부동산 뉴스</a></h4>
-                <ul class="list-unstyled">
-                    {% for item in news_list %}
-                    <li>
-                        <a href="#">{{ item.title|truncatechars:25 }}</a>
-                        <span class="date">{{ item.date|date:"m.d" }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="info-section">
-                <h4><a href="{% url 'properties:weather' %}">오늘의 날씨</a></h4>
-                <ul class="list-unstyled">
-                    {% for item in weather_list %}
-                    <li class="d-flex align-items-center mb-2">
-                        <i class="{{ item.icon }} fa-fw me-2 text-muted"></i>
-                        <span>{{ item.location }}: {{ item.temp }}, {{ item.condition }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="info-section">
-                <h4><a href="{% url 'properties:announcements' %}">공지사항</a></h4>
-                <ul class="list-unstyled">
-                    {% for item in announcements_list %}
-                    <li>
-                        <a href="{% url 'properties:announcement_detail' item.pk %}">{{ item.title|truncatechars:25
-                            }}</a>
-                        <span class="date">{{ item.date|date:"m.d" }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+<div class="row g-5">
+    <div class="col-md-4">
+        <div class="info-section">
+            <h4><a href="{% url 'properties:news' %}">부동산 뉴스</a></h4>
+            <ul class="list-unstyled">
+                {% for item in news_list %}
+                <li>
+                    <a href="#">{{ item.title|truncatechars:25 }}</a>
+                    <span class="date">{{ item.date|date:"m.d" }}</span>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="info-section">
+            <h4><a href="{% url 'properties:weather' %}">오늘의 날씨</a></h4>
+            <ul class="list-unstyled">
+                {% for item in weather_list %}
+                <li class="d-flex align-items-center mb-2">
+                    <i class="{{ item.icon }} fa-fw me-2 text-muted"></i>
+                    <span>{{ item.location }}: {{ item.temp }}, {{ item.condition }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="info-section">
+            <h4><a href="{% url 'properties:announcements' %}">공지사항</a></h4>
+            <ul class="list-unstyled">
+                {% for item in announcements_list %}
+                <li>
+                    <a href="{% url 'properties:announcement_detail' item.pk %}">{{ item.title|truncatechars:25
+                        }}</a>
+                    <span class="date">{{ item.date|date:"m.d" }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
 </div>
 {% endblock %}

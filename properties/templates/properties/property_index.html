@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}   {# 숫자 포맷용 humanize 로드 #}
 
 {% block content %}
 <h2>매물 목록</h2>
@@ -14,6 +15,13 @@
         <p>지역: {{ property.region }}</p>
         <p>위도: {{ property.latitude }}, 경도: {{ property.longitude }}</p>
         <p>작성자: {{ property.author.username }}</p>
+        <p>가격:
+            {% if property.price %}
+                {{ property.price|intcomma }} 원
+            {% else %}
+                가격 미정
+            {% endif %}
+        </p>
         <a href="{% url 'properties:property_detail' property.pk %}" class="text-blue-500">상세보기</a>
     </div>
     {% empty %}

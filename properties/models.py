@@ -1,4 +1,3 @@
-# models.py
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -14,13 +13,13 @@ class Property(models.Model):
         ("울산광역시", "울산광역시"),
     ]
 
-    # 작성자 필드 추가, 기존 데이터는 null 허용
+    # 작성자 필드
     author = models.ForeignKey(
         User,
         verbose_name="작성자",
         on_delete=models.CASCADE,
         related_name="properties",
-        null=True,   # 기존 데이터에는 비워둘 수 있게
+        null=True,
         blank=True
     )
 
@@ -30,10 +29,11 @@ class Property(models.Model):
     region = models.CharField("지역", max_length=20, choices=REGION_CHOICES)
     description = models.TextField("설명", blank=True)
     image = models.ImageField("이미지", upload_to="property_images/", null=True, blank=True)
+    price = models.BigIntegerField("가격", null=True, blank=True)  # 💰 가격 필드 추가
     created_at = models.DateTimeField("생성날짜", auto_now_add=True)
 
     def __str__(self):
-        return f"{self.title} ({self.region})"
+        return f"{self.title} ({self.region}) - {self.price if self.price else '가격 미정'}원"
 
     class Meta:
         verbose_name = "Property"
