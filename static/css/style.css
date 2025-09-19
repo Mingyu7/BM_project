@@ -179,7 +179,7 @@ a:hover {
 
 /* Login and Signup Page Specific Styles */
 .login-page-body {
-    background-image: url('../images/배경 이미지2.jpg');
+    background-image: url('../images/login_background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
