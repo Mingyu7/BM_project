@@ -255,3 +255,46 @@ body::before {
     background-color: rgba(255, 255, 255, 0.7); /* White overlay with 70% opacity */
     z-index: -1; /* Place it behind the content but above the background image */
 }
+<<<<<<< HEAD
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-2px);
+}
+
+/* Property Form Page */
+.property-form-container {
+    background-color: #f8f9fa;
+}
+
+.property-form-container .form-label {
+    font-weight: 500;
+}
+
+/* Region Navigation */
+.region-nav .nav-pills .nav-link {
+    color: #8D6E63;
+    border: 1px solid #8D6E63;
+    margin: 0 5px;
+    transition: all 0.3s;
+}
+
+.region-nav .nav-pills .nav-link.active {
+    background-color: #8D6E63;
+    color: white;
+}
+
+.region-nav .nav-pills .nav-link:hover {
+    background-color: #6D4C41;
+    color: white;
+}
+
+.property-thumbnail {
+    width: 96px !important;  /* Equivalent to h-24 / w-24 */
+    height: 96px !important; /* Equivalent to h-24 / w-24 */
+    object-fit: cover !important;
+    border-radius: 0.25rem !important; /* Equivalent to rounded */
+}
+=======
+>>>>>>> 25cc832a5e9f607f3748accc0875bcf78ecc5628

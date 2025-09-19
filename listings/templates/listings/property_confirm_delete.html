@@ -1,0 +1,17 @@
+{% extends 'listings/base.html' %}
+
+{% block title %}매물 삭제 확인{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2>매물 삭제 확인</h2>
+    <p>"{{ property.title }}" 매물을 정말로 삭제하시겠습니까?</p>
+    <p>이 작업은 되돌릴 수 없습니다.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">삭제</button>
+        <a href="{% url 'listings:property_detail' property.pk %}" class="btn btn-secondary">취소</a>
+    </form>
+</div>
+{% endblock %}
