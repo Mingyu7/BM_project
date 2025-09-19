@@ -1,0 +1,45 @@
+{% extends 'listings/base.html' %}
+
+{% block title %}공지사항{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">공지사항</h2>
+    <table class="table table-hover announcement-table">
+        <thead class="table-light">
+            <tr>
+                <th scope="col" class="text-center" style="width: 10%;">번호</th>
+                <th scope="col" style="width: 55%;">제목</th>
+                <th scope="col" class="text-center" style="width: 15%;">작성자</th>
+                <th scope="col" class="text-center" style="width: 20%;">작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">3</td>
+                <td><a href="announcement_detail.html">서버 점검 안내 (2025-10-01)</a></td>
+                <td class="text-center">관리자</td>
+                <td class="text-center">2025-09-20</td>
+            </tr>
+            <tr>
+                <td class="text-center">2</td>
+                <td><a href="announcement_detail.html">개인정보처리방침 변경 안내</a></td>
+                <td class="text-center">관리자</td>
+                <td class="text-center">2025-09-18</td>
+            </tr>
+            <tr>
+                <td class="text-center">1</td>
+                <td><a href="announcement_detail.html">웹사이트 오픈 안내</a></td>
+                <td class="text-center">관리자</td>
+                <td class="text-center">2025-09-15</td>
+            </tr>
+            <!-- 데이터가 없을 경우 -->
+            <!--
+            <tr>
+                <td colspan="4" class="text-center">등록된 공지사항이 없습니다.</td>
+            </tr>
+            -->
+        </tbody>
+    </table>
+</div>
+{% endblock %}
