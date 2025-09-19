@@ -26,7 +26,7 @@ def property_list(request):
         'news_list': news_list,
         'announcements_list': dummy_announcements,
     }
-    return render(request, 'listings/property_list.html', context)
+    return render(request, 'listings/property_main.html', context)
 
 
 def property_detail(request, pk):
@@ -52,6 +52,36 @@ def property_create(request):
         form = PropertyForm()
     return render(request, 'listings/property_form.html', {'form': form})
 
+
+@login_required
+def property_update(request, pk):
+    property_obj = get_object_or_404(Property, pk=pk)
+    if property_obj.author != request.user:
+        # You can redirect to a 'permission denied' page or just the detail page
+        return redirect('listings:property_detail', pk=pk)
+
+    if request.method == 'POST':
+        form = PropertyForm(request.POST, request.FILES, instance=property_obj)
+        if form.is_valid():
+            form.save()
+            return redirect('listings:property_detail', pk=pk)
+    else:
+        form = PropertyForm(instance=property_obj)
+    return render(request, 'listings/property_form.html', {'form': form})
+
+
+@login_required
+def property_delete(request, pk):
+    property_obj = get_object_or_404(Property, pk=pk)
+    if property_obj.author != request.user:
+        return redirect('listings:property_detail', pk=pk)
+
+    if request.method == 'POST':
+        property_obj.delete()
+        return redirect('listings:home')
+    return render(request, 'listings/property_confirm_delete.html', {'property': property_obj})
+
+
 def property_index(request):
     region = request.GET.get('region')
     if region:
@@ -66,4 +96,4 @@ def property_index(request):
         'regions': regions,
         'selected_region': region,
     }
-    return render(request, 'listings/property_index.html', context)
+    return render(request, 'listings/property_list.html', context)

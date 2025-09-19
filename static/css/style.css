@@ -254,6 +254,9 @@ a:hover {
     color: white;
 }
 
-
-
-
+.property-thumbnail {
+    width: 96px !important;  /* Equivalent to h-24 / w-24 */
+    height: 96px !important; /* Equivalent to h-24 / w-24 */
+    object-fit: cover !important;
+    border-radius: 0.25rem !important; /* Equivalent to rounded */
+}
