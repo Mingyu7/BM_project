@@ -5,75 +5,56 @@
 
 {% block content %}
 <style>
-    .map-container { # 날씨 이미지 속성
-        position: relative;
-        width: 100%;
-        height : 80%;
-        max-width: 800px; /* 지도의 최대 너비 */
-        margin: 0 auto; /* 가운데 정렬 */
-        background-image: url("{% static 'images/korea_map.png' %}");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        aspect-ratio: 800 / 1200; /* 이미지 비율에 맞게 조정 */
+    .table > thead {
+        background-color: #8D6E63; /* Primary brown for the header */
+        color: white;
+        border-color: #8D6E63;
     }
-
-    .weather-dot {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 50%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        transform: translate(-50%, -50%); /* 중앙 정렬 */
-        font-size: 0.7rem;
-        font-weight: bold;
-        text-align: center;
-        transition: transform 0.2s ease;
+    .table > tbody {
+        background-color: #F7F5F2; /* A very light, uniform brown for the body */
     }
-
-    .weather-dot:hover {
-        transform: translate(-50%, -50%) scale(1.2);
-        z-index: 10;
-    }
-
-    .weather-dot i {
-        font-size: 1.2rem;
-        margin-bottom: 2px;
-    }
-
-    .weather-dot .temp {
-        font-size: 0.9rem;
+    .table-hover > tbody > tr:hover > * {
+        background-color: #EFEBE9; /* A slightly darker brown for hover */
     }
 </style>
-
 <div class="container mt-5">
     <div class="text-center mb-4">
-        <h1 class="display-4"><i class="fas fa-map-marked-alt"></i> 지도 위 현재 날씨</h1>
+        <h1 class="display-4"><i class="fas fa-cloud-sun"></i> 주요 도시 현재 날씨</h1>
         <p class="lead">대한민국 주요 도시의 실시간 날씨 정보를 확인하세요.</p>
     </div>
 
-    <div class="map-container">
-        {% if weather_list %}
-            {% for weather in weather_list %}
-            <div class="weather-dot" style="top: {{ weather.top }}; left: {{ weather.left }};" title="{{ weather.location }}: {{ weather.condition }}">
-                <span>{{ weather.location|truncatechars:4 }}</span>
-                <i class="{{ weather.icon }}"></i>
-                <span class="temp">{{ weather.temp }}</span>
-            </div>
-            {% endfor %}
-        {% else %}
-            <div class="col-12">
-                <div class="alert alert-warning text-center" role="alert">
-                    날씨 정보를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.
-                </div>
-            </div>
-        {% endif %}
+    <div class="table-responsive">
+        <table class="table table-hover text-center align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">도시</th>
+                    <th scope="col">날씨</th>
+                    <th scope="col">기온</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if weather_list %}
+                    {% for weather in weather_list %}
+                    <tr>
+                        <td><strong>{{ weather.location }}</strong></td>
+                        <td>
+                            <i class="{{ weather.icon }} fa-2x"></i>
+                            <span class="ms-2">{{ weather.condition }}</span>
+                        </td>
+                        <td><span class="temp h5">{{ weather.temp }}</span></td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="alert alert-warning text-center my-3" role="alert">
+                                날씨 정보를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
     </div>
 </div>
-
 {% endblock %}
