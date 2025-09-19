@@ -1,0 +1,79 @@
+{% extends 'listings/base.html' %}
+{% load static %}
+
+{% block title %}지도 위 날씨 정보{% endblock %}
+
+{% block content %}
+<style>
+    .map-container { # 날씨 이미지 속성
+        position: relative;
+        width: 100%;
+        height : 80%;
+        max-width: 800px; /* 지도의 최대 너비 */
+        margin: 0 auto; /* 가운데 정렬 */
+        background-image: url("{% static 'images/korea_map.png' %}");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        aspect-ratio: 800 / 1200; /* 이미지 비율에 맞게 조정 */
+    }
+
+    .weather-dot {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        transform: translate(-50%, -50%); /* 중앙 정렬 */
+        font-size: 0.7rem;
+        font-weight: bold;
+        text-align: center;
+        transition: transform 0.2s ease;
+    }
+
+    .weather-dot:hover {
+        transform: translate(-50%, -50%) scale(1.2);
+        z-index: 10;
+    }
+
+    .weather-dot i {
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+    }
+
+    .weather-dot .temp {
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="display-4"><i class="fas fa-map-marked-alt"></i> 지도 위 현재 날씨</h1>
+        <p class="lead">대한민국 주요 도시의 실시간 날씨 정보를 확인하세요.</p>
+    </div>
+
+    <div class="map-container">
+        {% if weather_list %}
+            {% for weather in weather_list %}
+            <div class="weather-dot" style="top: {{ weather.top }}; left: {{ weather.left }};" title="{{ weather.location }}: {{ weather.condition }}">
+                <span>{{ weather.location|truncatechars:4 }}</span>
+                <i class="{{ weather.icon }}"></i>
+                <span class="temp">{{ weather.temp }}</span>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-warning text-center" role="alert">
+                    날씨 정보를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
