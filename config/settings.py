@@ -32,7 +32,11 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'properties.apps.PropertiesConfig',
+    'listings.apps.ListingsConfig',
+    'announcements.apps.AnnouncementsConfig',
+    'bookmarks.apps.BookmarksConfig',
+    'map.apps.MapConfig',
+    'weather.apps.WeatherConfig',
     'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -134,7 +138,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
-# OpenWeatherMap API Key
-OPENWEATHER_API_KEY = 'f3bc0fab5a87054b1b7f4499c7fcd511'
-

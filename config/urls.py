@@ -2,12 +2,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from properties import views as properties_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', properties_views.property_list, name='home'),  # Set home page to property list
-    path('properties/', include('properties.urls')),  # 리스트 & 상세 페이지
+    path('', include('listings.urls')),  # Set home page to listings
+    path('listings/', include('listings.urls')),
+    path('announcements/', include('announcements.urls')),
+    path('bookmarks/', include('bookmarks.urls')),
+    path('map/', include('map.urls')),
+    path('weather/', include('weather.urls')),
     path('accounts/', include('accounts.urls')),
 
 ]
