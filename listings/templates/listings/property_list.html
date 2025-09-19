@@ -29,6 +29,7 @@
             {% endif %}
             <h3 class="text-lg font-bold mt-2">{{ property.title }}</h3>
                         <p class="card-text">{{ property.description|truncatechars:100 }}</p>
+                        <a href="{% url 'listings:property_detail' property.pk %}" class="text-blue-500">상세보기</a><br>
                         {% if user.is_authenticated and user == property.author %}
                         <a href="{% url 'listings:property_update' property.id %}" class="btn btn-primary btn-sm">수정</a>
                         <a href="{% url 'listings:property_delete' property.id %}" class="btn btn-danger btn-sm">삭제</a>

@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from listings import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('listings.urls')),  # Set home page to listings
+    path('', views.myhome),
     path('listings/', include('listings.urls')),
     path('announcements/', include('announcements.urls')),
     path('bookmarks/', include('bookmarks.urls')),

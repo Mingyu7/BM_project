@@ -3,8 +3,30 @@
 {% block title %}즐겨찾기{% endblock %}
 
 {% block content %}
-<div class="text-center">
-        <h1>즐겨찾기 페이지 입니다</h1>
-        <p>이 페이지는 사용자가 즐겨찾기한 매물 목록을 보여줄 공간입니다.</p>
-    </div>
+<div class="container mt-4">
+    <h2>즐겨찾기 목록</h2>
+    {% if favorites %}
+      <div style="display:grid; gap:40px; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); padding:20px;">
+        {% for prop in favorites %}
+          <div class="card" style="position: relative;">
+            <form action="{% url 'bookmarks:remove_favorite' prop.id %}" method="post" style="position: absolute; top: 10px; right: 10px; z-index: 1;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('정말로 삭제하시겠습니까?');">&times;</button>
+            </form>
+            {% if prop.image %}
+              <img src="{{ prop.image.url }}" class="card-img-top" alt="{{ prop.title }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ prop.title }}</h5>
+              <p class="card-text">{{ prop.description|truncatewords:20 }}</p>
+              <p class="card-text"><strong>가격:</strong> {{ prop.price }}원</p>
+              <a href="{% url 'listings:property_detail' prop.pk %}" class="btn btn-primary">자세히 보기</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="text-align:center;">즐겨찾기한 항목이 없습니다.</p>
+    {% endif %}
+</div>
 {% endblock %}
