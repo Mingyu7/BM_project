@@ -1,48 +1,48 @@
 {% extends 'listings/base.html' %}
 {% load humanize %}
 
-{% block title %}매물 목록 - Better My house{% endblock %}
+{% block title %}매물 검색 결과{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>매물 목록</h2>
+<div class="container my-5">
+    <h2 class="mb-4">매물 검색 결과</h2>
 
-    <div class="region-nav my-4">
-        <ul class="nav nav-pills justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link {% if not selected_region %}active{% endif %}" href="{% url 'listings:property_index' %}">전체</a>
-            </li>
-            {% for region_value, region_display in regions %}
-            <li class="nav-item">
-                <a class="nav-link {% if selected_region == region_value %}active{% endif %}" href="?region={{ region_value }}">{{ region_display }}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <div class="property-list grid grid-cols-3 gap-4">
+    <div class="row">
         {% for property in properties %}
-        <div class="property-card border rounded p-3 shadow">
-            {% if property.image %}
-            <img src="{{ property.image.url }}" alt="{{ property.title }}" class="property-thumbnail">
-
-            {% endif %}
-            <h3 class="text-lg font-bold mt-2">{{ property.title }}
-                {% if user.is_authenticated %}
-                    <button class="bookmark-btn {% if property.id in bookmarked_properties %}active{% endif %}" data-property-id="{{ property.id }}">
-                        &#9733; <!-- 별 모양 아이콘 (★) -->
-                    </button>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                {% if property.image %}
+                <img src="{{ property.image.url }}" class="card-img-top" alt="{{ property.title }}">
+                {% else %}
+                <div class="bg-light text-muted d-flex align-items-center justify-content-center" style="height: 200px;">
+                    이미지 없음
+                </div>
                 {% endif %}
-            </h3>
-                        <p class="card-text">{{ property.description|truncatechars:100 }}</p>
-                        <a href="{% url 'listings:property_detail' property.pk %}" class="text-blue-500">상세보기</a><br>
-                        {% if user.is_authenticated and user == property.author %}
-                        <a href="{% url 'listings:property_update' property.id %}" class="btn btn-primary btn-sm">수정</a>
-                        <a href="{% url 'listings:property_delete' property.id %}" class="btn btn-danger btn-sm">삭제</a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ property.title }}
+                        {% if user.is_authenticated %}
+                            <button class="bookmark-btn {% if property.id in bookmarked_properties %}active{% endif %}" data-property-id="{{ property.id }}">
+                                &#9733; <!-- 별 모양 아이콘 (★) -->
+                            </button>
                         {% endif %}
-                    </div>
+                    </h5>
+                    <p class="card-text">{{ property.description|truncatewords:15 }}</p>
+                    <p class="card-text"><strong>지역:</strong> {{ property.region }}</p>
+                    <p class="card-text"><strong>가격:</strong>
+                        {% if property.price %}
+                        {{ property.price|intcomma }} 원
+                        {% else %}
+                        가격 미정
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'listings:property_detail' property.pk %}" class="btn btn-primary btn-sm">상세보기</a>
+                </div>
+            </div>
+        </div>
         {% empty %}
-        <p>등록된 매물이 없습니다.</p>
+        <div class="col-12">
+            <p>검색된 매물이 없습니다.</p>
+        </div>
         {% endfor %}
     </div>
 </div>
