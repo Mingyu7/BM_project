@@ -67,3 +67,7 @@ def property_index(request):
         'selected_region': region,
     }
     return render(request, 'listings/property_index.html', context)
+
+#''로 접속했을때 'listings'로 리다이렉트
+def myhome(request):
+    return redirect('/listings/')
