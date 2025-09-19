@@ -15,6 +15,9 @@
         </div>
         <hr>
         <div class="text-end">
+            {% if user.is_superuser %}
+            <a href="{% url 'announcements:announcement_delete' announcement.pk %}" class="btn btn-danger" onclick="return confirm('정말로 이 공지사항을 삭제하시겠습니까?');">삭제</a>
+            {% endif %}
             <a href="{% url 'announcements:announcements' %}" class="btn btn-primary">목록으로</a>
         </div>
     </div>

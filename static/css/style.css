@@ -113,6 +113,23 @@ a:hover {
     border-bottom: none !important;
 }
 
+/* Region Navigation Styles */
+.region-nav .nav-pills .nav-link {
+    color: #8D6E63; /* Default text color for region links */
+}
+
+.region-nav .nav-pills .nav-link.active,
+.region-nav .nav-pills .nav-link:hover {
+    background-color: #BCAAA4; /* Light brown background for active/hover */
+    color: #FFFFFF; /* White text for active/hover for better contrast */
+    border-color: #BCAAA4; /* Match border color */
+}
+
+.region-nav .nav-pills .nav-link:hover {
+    background-color: #D7CCC8; /* Slightly lighter brown for hover */
+    color: #8D6E63; /* Primary brown text on hover */
+}
+
 /* New Section Styles for homepage */
 .info-section {
     margin-top: 3rem;

@@ -5,6 +5,11 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="mb-4">공지사항</h2>
+    {% if user.is_superuser %}
+    <div class="mb-3 text-end">
+        <a href="{% url 'announcements:announcement_create' %}" class="btn btn-success">공지사항 작성</a>
+    </div>
+    {% endif %}
     <table class="table table-hover table-striped announcement-table">
         <thead class="table-light">
             <tr>
