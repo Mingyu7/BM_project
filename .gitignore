@@ -1,55 +1,55 @@
 # ========================
-# Python
+# Byte-compiled / optimized / DLL files
 # ========================
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-*.egg
-*.egg-info/
-dist/
-build/
-*.log
+*$py.class
 
 # ========================
-# 가상환경
+# Distribution / packaging
+# ========================
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ========================
+# Virtual Environments
 # ========================
 .venv/
 env/
 venv/
+ENV/
 
 # ========================
-# PyCharm
+# IDEs
 # ========================
 .idea/
 *.iml
-*.iws
 
 # ========================
-# OS 관련
+# OS Files
 # ========================
 .DS_Store
 Thumbs.db
 
 # ========================
-# 기타
+# Django specific
 # ========================
-*.sqlite3
-*.db
-*.pyc
-# Python cache
-__pycache__/
-*.pyc
-
-# SQLite database
-db.sqlite3
-
-# Virtual environments
-.venv/
-venv/
-
-# IDE settings
-.idea/
-*.iml
-
-
+*.log
+local_settings.py
+#db.sqlite3
+db.sqlite3-journal
