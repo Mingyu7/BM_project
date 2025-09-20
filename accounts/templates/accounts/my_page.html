@@ -1,10 +1,137 @@
-{% extends 'listings/base.html' %}
-
-{% block title %}마이페이지{% endblock %}
+{% extends "listings/base.html" %}
+{% load static %}
 
 {% block content %}
-    <div class="text-center">
-        <h1>마이페이지 입니다</h1>
-        <p>이 페이지는 사용자별 정보를 보여줄 공간입니다.</p>
+    <style>
+        .upload-box {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            display: inline-block;
+            align-items: center;
+            justify-content: center;
+        }
+        .upload-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+        table {
+            width: 800px !important;
+        }
+        .td-time{
+            width: 10%;
+            text-align: center;
+        }
+        .td-company{
+            width: 25%;
+            text-align: right;
+        }
+        .postTable, .applicationTable {
+            display: none;
+            width: 95% !important;
+            max-width: 1200px !important;
+            margin: 0 auto !important;
+        }
+        .span-content{
+            display: inline-block;
+            width: 49%;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            background-color: #D7CCC8; /* Light brown default background */
+            color: #6D4C41; /* Dark brown text color */
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .span-content.active {
+            background-color: #8D6E63; /* Active color from theme */
+            color: white;
+            border-color: #8D6E63;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showPostsSpan = document.querySelector('[onclick="showPost()"]');
+            const showAppsSpan = document.querySelector('[onclick="showApplication()"]');
+            const postTable = document.querySelector('.postTable');
+            const applicationTable = document.querySelector('.applicationTable');
+
+            window.showPost = function() {
+                applicationTable.style.display = 'none';
+                postTable.style.display = 'table';
+                showPostsSpan.classList.add('active');
+                showAppsSpan.classList.remove('active');
+            }
+
+            window.showApplication = function() {
+                postTable.style.display = 'none';
+                applicationTable.style.display = 'table';
+                showAppsSpan.classList.add('active');
+                showPostsSpan.classList.remove('active');
+            }
+
+            // Initially show the posts table and set active state
+            showPost();
+        });
+    </script>
+<div style="margin: 0 auto;">
+    <h1 class="main_logo pointer" onclick="location.href='{% url 'listings:home' %}'">Better My House</h1>
+    <div class="d-flex align-items-center p-3 my-3 border rounded-3">
+        <div class="flex-shrink-0">
+            <div class="upload-box">
+                {% if user_info.profile_image %}
+                    <img class="image" src="{{ user_info.profile_image.url }}">
+                {% else %}
+                    <img class="image" src="{% static 'images/user1.png' %}">
+                {% endif %}
+            </div>
+        </div>
+        <div class="ms-3">
+            <h5 class="mb-1">{{ user_info.name|default:user.username }}</h5>
+            <p class="mb-0">{{ user_info.phone_number|default:'전화번호 정보가 없습니다.' }}</p>
+        </div>
     </div>
+    <br>
+    <a href="{% url 'accounts:profile_update' %}" class="btn btn-primary">정보 수정</a>
+    <br><br><br>
+
+    <div>
+    <span class="span-content" onclick="showPost()">내가 등록한 매물</span>
+    <span class="span-content" onclick="showApplication()">즐겨찾기</span>
+    </div>
+    <table class="table postTable">
+        {% if user_posts %}
+            {% for prop in user_posts %}
+            <tr>
+                <td class="td-time">{{ prop.created_at|date:"Y-m-d" }}</td>
+                <td class="td-title">
+                    <a href="{% url 'listings:property_detail' prop.pk %}">{{ prop.title }}</a>
+                </td>
+                <td class="td-company">{{ prop.price|default:"가격 미정" }}원</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td colspan="3" style="text-align:center">등록한 매물이 없습니다.</td></tr>
+        {% endif %}
+    </table>
+
+    <table class="table applicationTable">
+        {% if applications %}
+            {% for fav in applications %}
+            <tr>
+                <td class="td-time">{{ fav.property.created_at|date:"Y-m-d" }}</td>
+                <td class="td-title">
+                    <a href="{% url 'listings:property_detail' fav.property.pk %}">{{ fav.property.title }}</a>
+                </td>
+                <td class="td-company">{{ fav.property.price|default:"가격 미정" }}원</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td colspan="3" style="text-align:center">즐겨찾기한 매물이 없습니다.</td></tr>
+        {% endif %}
+    </table>
+</div>
 {% endblock %}

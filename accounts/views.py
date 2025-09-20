@@ -4,8 +4,53 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django import forms
-from .models import UserProfile
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
+from .models import UserProfile
+from listings.models import Property
+from bookmarks.models import Favorite
+from .forms import UserProfileForm
+
+@login_required
+def profile_update(request):
+    try:
+        profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        # If profile does not exist, create one
+        profile = UserProfile.objects.create(user=request.user)
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:my_page')
+    else:
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'accounts/profile_update.html', {'form': form})
+
+@login_required
+def my_page(request):
+    user = request.user
+    try:
+        user_profile = user.userprofile
+    except UserProfile.DoesNotExist:
+        user_profile = None
+
+    # Fetch properties created by the user
+    user_posts = Property.objects.filter(author=user)
+
+    # Fetch user's bookmarked/favorited properties
+    applications = Favorite.objects.filter(user=user)
+
+    context = {
+        'user_info': user_profile, # Passing the profile
+        'user': user, # Passing the default user object as well
+        'user_posts': user_posts,
+        'applications': applications,
+    }
+    return render(request, 'accounts/my_page.html', context)
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(label='아이디', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -49,6 +94,3 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'accounts/signup.html', {'form': form})
-
-def my_page(request):
-    return render(request, 'accounts/my_page.html')
