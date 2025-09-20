@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+import pymysql
+pymysql.install_as_MySQLdb()
+
 import os
 from pathlib import Path
 
@@ -82,7 +85,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'pymysql.install_as_MySQLdb',  # 이 부분이 올바른 값입니다.
+        'ENGINE': 'django.db.backends.mysql',  # 이 부분으로 변경
         'NAME': 'mydb',
         'USER': 'admin',
         'PASSWORD': 'mingyu5749',
