@@ -82,8 +82,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 이 부분이 올바른 값입니다.
-        'NAME': 'database-1',
+        'ENGINE': 'pymysql.install_as_MySQLdb',  # 이 부분이 올바른 값입니다.
+        'NAME': 'mydb',
         'USER': 'admin',
         'PASSWORD': 'mingyu5749',
         'HOST': 'database-1.c894c6ocwin.ap-northeast-2.rds.amazonaws.com',
