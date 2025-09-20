@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 이 부분으로 변경
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mydb',
         'USER': 'admin',
         'PASSWORD': 'mingyu5749',
-        'HOST': 'database-1.c894c6ocwin.ap-northeast-2.rds.amazonaws.com',
+        'HOST': 'database-2.c894c6ocwin.ap-northeast-2.rds.amazonaws.com', # 이 부분은 추측입니다. AWS 콘솔에서 엔드포인트를 다시 확인하세요.
         'PORT': '3306',
     }
 }
