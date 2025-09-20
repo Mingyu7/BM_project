@@ -88,6 +88,10 @@ DATABASES = {
         'PASSWORD': 'mingyu5749',
         'HOST': 'database-1.c894c6ocwin.ap-northeast-2.rds.amazonaws.com',
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        },
     }
 }
 
