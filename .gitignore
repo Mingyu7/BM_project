@@ -40,6 +40,7 @@ Thumbs.db
 # Python cache
 __pycache__/
 *.pyc
+#똥 치워보자
 
 # SQLite database
 db.sqlite3
