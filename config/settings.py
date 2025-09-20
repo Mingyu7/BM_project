@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import pymysql
-pymysql.install_as_MySQLdb()
+pymysql.install_as_MySQLdb() #db 다운
 
 import os
 from pathlib import Path
@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mydb',
+        'NAME': 'mydb', #db이름
         'USER': 'admin',
         'PASSWORD': 'mingyu5749',
-        'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # 이 부분은 추측입니다. AWS 콘솔에서 엔드포인트를 다시 확인하세요.
+        'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # AWS 콘솔에서 엔드포인트를 다시 확인하세요.
         'PORT': '3306',
     }
 }
