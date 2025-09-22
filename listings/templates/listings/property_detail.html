@@ -6,23 +6,24 @@
 {% block content %}
 <div class="container my-5">
     <div class="row">
+        <!-- 이미지 -->
         <div class="col-md-6">
             {% if property.image %}
             <img src="{{ property.image.url }}" class="img-fluid rounded" alt="{{ property.title }}">
             {% else %}
-            <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                 style="height: 700px;">
+            <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 700px;">
                 이미지 없음
             </div>
             {% endif %}
         </div>
 
+        <!-- 매물 정보 -->
         <div class="col-md-6">
             <h2 class="mb-3">{{ property.title }}
                 {% if user.is_authenticated %}
-                    <button class="bookmark-btn {% if is_bookmarked %}active{% endif %}" data-property-id="{{ property.pk }}">
-                        &#9733; <!-- 별 모양 아이콘 (★) -->
-                    </button>
+                <button class="bookmark-btn {% if is_bookmarked %}active{% endif %}" data-property-id="{{ property.pk }}">
+                    &#9733;
+                </button>
                 {% endif %}
             </h2>
             <p><strong>지역:</strong> {{ property.region }}</p>
@@ -33,24 +34,21 @@
             <p><strong>설명:</strong></p>
             <p>{{ property.description|linebreaks }}</p>
             <p>가격:
-                {% if property.price %}
-                {{ property.price|intcomma }} 원
-                {% else %}
-                가격 미정
-                {% endif %}
+                {% if property.price %}{{ property.price|intcomma }} 원{% else %}가격 미정{% endif %}
             </p>
             <p><strong>등록일:</strong> {{ property.created_at|date:"Y.m.d" }}</p>
 
+            <!-- 지도/구글 지도 버튼 -->
             {% if property.latitude and property.longitude %}
-            <a href="https://www.google.com/maps/search/?api=1&query={{ property.latitude }},{{ property.longitude }}"
-               target="_blank" class="btn btn-outline-primary mt-3">
-                지도에서 보기
-            </a>
+                <a href="https://www.google.com/maps/search/?api=1&query={{ property.latitude }},{{ property.longitude }}" target="_blank" class="btn btn-outline-primary mt-2">
+                    구글 지도에서 보기
+                </a>
             {% endif %}
             {% if user == property.author %}
-                <a href="{% url 'listings:property_update' property.pk %}" class="btn btn-primary mt-3">수정</a>
-                <a href="{% url 'listings:property_delete' property.pk %}" class="btn btn-danger mt-3">삭제</a>
+            <a href="{% url 'listings:property_update' property.pk %}" class="btn btn-primary mt-3">수정</a>
+            <a href="{% url 'listings:property_delete' property.pk %}" class="btn btn-danger mt-3">삭제</a>
             {% endif %}
+            <button class="btn btn-secondary mt-3" onclick="modalMap({{ property.latitude }}, {{ property.longitude }})">지도 보기</button>
         </div>
     </div>
 
@@ -59,22 +57,70 @@
     </div>
 </div>
 
+<!-- 모달 -->
+<div id="modal-container" class="modal-container" style="position:fixed; width:100%; height:100%; left:0; top:0; z-index:99; display:none; background-color: rgba(0,0,0,0.4);">
+    <div id="map-in-modal" class="map-in-modal" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:80%; height:80%; background:#fff; border-radius:8px; overflow:hidden;">
+        <!-- X 버튼 -->
+        <button id="modal-close-btn" style="position:absolute; top:10px; right:10px; z-index:10; border:none; background:none; font-size:24px; cursor:pointer;">&times;</button>
+        <!-- 좌표 표시 -->
+        <div id="coords-display" style="position:absolute; top:10px; left:10px; z-index:10; background: rgba(255,255,255,0.9); padding:5px 10px; border-radius:5px; font-size:14px;">
+            위도: <span id="modal-lat">-</span> / 경도: <span id="modal-lng">-</span>
+        </div>
+        <div id="map" style="width:100%; height:100%;"></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ KAKAO_API_KEY }}"></script>
+<script>
+function modalMap(lat, lon){
+    const modal = document.getElementById("modal-container");
+    const modalLat = document.getElementById("modal-lat");
+    const modalLng = document.getElementById("modal-lng");
+
+    modal.style.display = "block";
+
+    modalLat.textContent = lat;
+    modalLng.textContent = lon;
+
+    const mapContainer = document.getElementById('map');
+    const mapOption = {
+        center: new kakao.maps.LatLng(lat, lon),
+        level: 6
+    };
+    const map = new kakao.maps.Map(mapContainer, mapOption);
+
+    const markerPosition  = new kakao.maps.LatLng(lat, lon);
+    const marker = new kakao.maps.Marker({ position: markerPosition });
+    marker.setMap(map);
+
+    // X 버튼 클릭 시 모달 닫기
+    document.getElementById("modal-close-btn").onclick = function() {
+        modal.style.display = "none";
+    };
+}
+
+// 모달 외부 클릭 시 닫기
+const modal = document.getElementById('modal-container');
+const mapInModal = document.getElementById('map-in-modal');
+
+modal.addEventListener('click', function() { modal.style.display = 'none'; });
+mapInModal.addEventListener('click', function(event){ event.stopPropagation(); });
+</script>
+
 <style>
-    .bookmark-btn {
-        background: none;
-        border: none;
-        color: #ccc; /* 비활성 상태 색상 */
-        cursor: pointer;
-        font-size: 24px;
-        margin-left: 10px; /* 제목과의 간격 */
-    }
-    .bookmark-btn.active {
-        color: #ffc107; /* 활성 상태 색상 (노란색) */
-    }
+.bookmark-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 24px;
+    margin-left: 10px;
+}
+.bookmark-btn.active { color: #ffc107; }
 </style>
 
 <script>
-// CSRF 토큰을 가져오는 함수 (Django에서 POST 요청 시 필수)
+// CSRF 토큰
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -91,27 +137,19 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
-// 북마크 버튼에 이벤트 리스너 추가
+// 북마크 버튼
 document.querySelector('.bookmark-btn').addEventListener('click', function() {
     const propertyId = this.dataset.propertyId;
     const url = `/bookmarks/toggle/${propertyId}/`;
 
     fetch(url, {
         method: 'POST',
-        headers: {
-            'X-CSRFToken': csrftoken,
-            'Content-Type': 'application/json'
-        },
+        headers: { 'X-CSRFToken': csrftoken, 'Content-Type': 'application/json' },
     })
     .then(response => response.json())
     .then(data => {
-        if (data.bookmarked) {
-            // 북마크 성공 시 'active' 클래스 추가
-            this.classList.add('active');
-        } else {
-            // 북마크 취소 시 'active' 클래스 제거
-            this.classList.remove('active');
-        }
+        if (data.bookmarked) this.classList.add('active');
+        else this.classList.remove('active');
     })
     .catch(error => console.error('Error:', error));
 });

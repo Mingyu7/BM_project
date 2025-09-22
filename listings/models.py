@@ -25,8 +25,8 @@ class Property(models.Model):
     )
 
     title = models.CharField("매물이름", max_length=255, db_index=True)
-    latitude = models.DecimalField("위도", max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField("경도", max_digits=9, decimal_places=6, null=True, blank=True)
+    latitude = models.FloatField("위도", null=True, blank=True)
+    longitude = models.FloatField("경도", null=True, blank=True)
     region = models.CharField("지역", max_length=20, choices=REGION_CHOICES)
     description = models.TextField("설명", blank=True)
     image = models.ImageField("이미지", upload_to="property_images/", null=True, blank=True)

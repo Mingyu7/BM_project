@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from .services import get_kakao_maps_api_key
+from django.conf import settings
 
 def map(request):
-    api_key = get_kakao_maps_api_key()
-    return render(request, 'map/map.html', {'api_key': api_key})
+    return render(request, 'map/map.html', {'KAKAO_API_KEY': settings.KAKAO_API_KEY})

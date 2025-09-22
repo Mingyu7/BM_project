@@ -6,6 +6,7 @@ from announcements.models import Announcement # Import Announcement model
 from .forms import PropertyForm
 from django.contrib.auth.decorators import login_required
 from bookmarks.models import Favorite # Import Favorite model for bookmarking
+from django.conf import settings
 
 def property_list(request):
     """
@@ -15,7 +16,7 @@ def property_list(request):
     properties = Property.objects.order_by('-id')[:6]
     weather_list = weather_services.fetch_weather(cities_to_fetch=['서울', '인천', '수원', '천안', '대전'])
     news_list = announcement_services.fetch_news()
-    
+
     # Fetch top 5 announcements
     announcements_list = Announcement.objects.order_by('-created_at')[:5]
 
@@ -45,6 +46,7 @@ def property_detail(request, pk):
     context = {
         'property': property_obj,
         'is_bookmarked': is_bookmarked, # 템플릿에 전달
+        'KAKAO_API_KEY': settings.KAKAO_API_KEY,
     }
     return render(request, 'listings/property_detail.html', context)
 
@@ -54,12 +56,13 @@ def property_create(request):
         form = PropertyForm(request.POST, request.FILES)
         if form.is_valid():
             property = form.save(commit=False)
+
             property.author = request.user
             property.save()
             return redirect('listings:property_detail', pk=property.pk)
     else:
         form = PropertyForm()
-    return render(request, 'listings/property_form.html', {'form': form})
+    return render(request, 'listings/property_form.html', {'form': form, 'KAKAO_API_KEY': settings.KAKAO_API_KEY})
 
 
 @login_required
@@ -76,7 +79,7 @@ def property_update(request, pk):
             return redirect('listings:property_detail', pk=pk)
     else:
         form = PropertyForm(instance=property_obj)
-    return render(request, 'listings/property_form.html', {'form': form})
+    return render(request, 'listings/property_form.html', {'form': form, 'KAKAO_API_KEY': settings.KAKAO_API_KEY})
 
 
 @login_required
