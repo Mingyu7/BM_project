@@ -48,7 +48,7 @@ body {
 }
 
 .nav-link:hover, .nav-link.active {
-    color: #8D6E63 !important; /* Primary brown on hover/active */
+    color: #8D6E63; /* Primary brown on hover/active */
 }
 
 /* Button Styles */
@@ -255,7 +255,6 @@ body::before {
     background-color: rgba(255, 255, 255, 0.7); /* White overlay with 70% opacity */
     z-index: -1; /* Place it behind the content but above the background image */
 }
-<<<<<<< HEAD
 
 .btn-success:hover {
     background-color: #218838;
@@ -296,5 +295,3 @@ body::before {
     object-fit: cover !important;
     border-radius: 0.25rem !important; /* Equivalent to rounded */
 }
-=======
->>>>>>> 25cc832a5e9f607f3748accc0875bcf78ecc5628
