@@ -281,7 +281,7 @@ body::before {
 
 .region-nav .nav-pills .nav-link.active {
     background-color: #8D6E63;
-    color: white;
+    color: white !important;
 }
 
 .region-nav .nav-pills .nav-link:hover {
