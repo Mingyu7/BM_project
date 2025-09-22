@@ -120,4 +120,3 @@ def property_index(request):
 #''로 접속했을때 'listings'로 리다이렉트
 def myhome(request):
     return redirect('/listings/')
-    return render(request, 'listings/property_list.html', context)
