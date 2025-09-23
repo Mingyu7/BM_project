@@ -1,0 +1,37 @@
+{% extends 'listings/base.html' %}
+
+{% block title %}프로필 수정 - Better My house{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">프로필 수정</h2>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.name.label_tag }}
+                            {{ form.name }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.profile_image.label_tag }}
+                            {{ form.profile_image }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.phone_number.label_tag }}
+                            {{ form.phone_number }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">저장하기</button>
+                            <a href="{% url 'accounts:my_page' %}" class="btn btn-secondary">취소</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

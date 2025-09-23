@@ -41,6 +41,7 @@ Thumbs.db
 __pycache__/
 *.pyc
 #똥 치워보자
+#똥 치워보자2
 
 # SQLite database
 db.sqlite3

@@ -15,8 +15,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-
 load_dotenv()
+KAKAO_API_KEY = os.getenv("KAKAO_API_KEY")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +28,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-0#!cu7=0)so64i6@7z!i*ulqq!yfz!$u07ajt@7gvzjz!^!j7p'
 
-KAKAO_MAPS_API_KEY = os.getenv('KAKAO_MAPS_API_KEY')
 KAKAO_REST_API_KEY = os.getenv('KAKAO_REST_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!

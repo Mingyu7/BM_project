@@ -48,7 +48,7 @@ body {
 }
 
 .nav-link:hover, .nav-link.active {
-    color: #8D6E63 !important; /* Primary brown on hover/active */
+    color: #8D6E63; /* Primary brown on hover/active */
 }
 
 /* Button Styles */

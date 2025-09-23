@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.conf import settings
-import requests
 from listings.models import Property
 from weather import services as weather_services
 from announcements import services as announcement_services
-from announcements.models import Announcement # Import Announcement model
+from announcements.models import Announcement
 from .forms import PropertyForm
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+import requests
+
 from bookmarks.models import Favorite # Import Favorite model for bookmarking
 
 def property_list(request):
@@ -47,6 +48,7 @@ def property_detail(request, pk):
     context = {
         'property': property_obj,
         'is_bookmarked': is_bookmarked, # 템플릿에 전달
+        'KAKAO_API_KEY': settings.KAKAO_API_KEY,
     }
     return render(request, 'listings/property_detail.html', context)
 
@@ -81,13 +83,14 @@ def property_create(request):
             return redirect('listings:property_detail', pk=property_instance.pk)
     else:
         form = PropertyForm()
-    return render(request, 'listings/property_form.html', {'form': form})
+    return render(request, 'listings/property_form.html', {'form': form, 'KAKAO_API_KEY': settings.KAKAO_API_KEY})
 
 
 @login_required
 def property_update(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
     if property_obj.author != request.user:
+        # You can redirect to a 'permission denied' page or just the detail page
         return redirect('listings:property_detail', pk=pk)
 
     if request.method == 'POST':
@@ -101,6 +104,7 @@ def property_update(request, pk):
                 url = "https://dapi.kakao.com/v2/local/search/address.json"
                 headers = {"Authorization": f"KakaoAK {settings.KAKAO_REST_API_KEY}"}
                 params = {"query": address}
+                from django.contrib.sites import requests
                 response = requests.get(url, headers=headers, params=params).json()
 
                 if response.get("documents"):
@@ -115,7 +119,7 @@ def property_update(request, pk):
             return redirect('listings:property_detail', pk=pk)
     else:
         form = PropertyForm(instance=property_obj)
-    return render(request, 'listings/property_form.html', {'form': form})
+    return render(request, 'listings/property_form.html', {'form': form, 'KAKAO_API_KEY': settings.KAKAO_API_KEY})
 
 
 @login_required
