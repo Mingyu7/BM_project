@@ -4,5 +4,7 @@
 
 # 설치 코드 (가상환경에서)
 pip install -r requirements.txt
+python manage.py makemigrations
+python manage.py migrate
 # 실행 코드 (가상환경에서)
 python manage.py runserver

@@ -132,14 +132,15 @@ a:hover {
 
 /* New Section Styles for homepage */
 .info-section {
-    margin-top: 3rem;
+    margin-top: 1rem;
 }
 
 .info-section h4 {
     border-bottom: 2px solid #8D6E63;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.25rem;
     font-weight: 600;
+    font-size: 1.1rem;
 }
 
 .info-section ul {
@@ -148,11 +149,12 @@ a:hover {
 }
 
 .info-section ul li {
-    padding: 0.5rem 0;
+    padding: 0.1rem 0;
     border-bottom: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 0.9rem;
 }
 
 .info-section ul li a {
@@ -281,7 +283,7 @@ body::before {
 
 .region-nav .nav-pills .nav-link.active {
     background-color: #8D6E63;
-    color: white;
+    color: white !important;
 }
 
 .region-nav .nav-pills .nav-link:hover {
@@ -290,8 +292,21 @@ body::before {
 }
 
 .property-thumbnail {
-    width: 96px !important;  /* Equivalent to h-24 / w-24 */
-    height: 96px !important; /* Equivalent to h-24 / w-24 */
+    width: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: cover !important;
     border-radius: 0.25rem !important; /* Equivalent to rounded */
 }
+
+.property-list {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+}
+
+.property-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
