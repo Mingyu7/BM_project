@@ -113,7 +113,7 @@ DATABASES = {
         'NAME': 'mydb', # 데이터베이스 이름
         'USER': 'admin', # 데이터베이스 사용자 이름
         'PASSWORD': 'mingyu5749', # 데이터베이스 사용자 비밀번호
-        'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # 데이터베이스 호스트 주소 (AWS RDS 엔드포인트)
+        'HOST': 'database-1.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # 데이터베이스 호스트 주소 (AWS RDS 엔드포인트)
         'PORT': '3306', # 데이터베이스 포트 번호
     }
 }
