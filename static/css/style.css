@@ -255,7 +255,6 @@ body::before {
     background-color: rgba(255, 255, 255, 0.7); /* White overlay with 70% opacity */
     z-index: -1; /* Place it behind the content but above the background image */
 }
-<<<<<<< HEAD
 
 .btn-success:hover {
     background-color: #218838;
@@ -282,7 +281,7 @@ body::before {
 
 .region-nav .nav-pills .nav-link.active {
     background-color: #8D6E63;
-    color: white;
+    color: white !important;
 }
 
 .region-nav .nav-pills .nav-link:hover {
@@ -291,10 +290,21 @@ body::before {
 }
 
 .property-thumbnail {
-    width: 96px !important;  /* Equivalent to h-24 / w-24 */
-    height: 96px !important; /* Equivalent to h-24 / w-24 */
+    width: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: cover !important;
     border-radius: 0.25rem !important; /* Equivalent to rounded */
 }
-=======
->>>>>>> 25cc832a5e9f607f3748accc0875bcf78ecc5628
+
+.property-list {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+}
+
+.property-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+

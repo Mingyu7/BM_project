@@ -14,6 +14,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,6 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-0#!cu7=0)so64i6@7z!i*ulqq!yfz!$u07ajt@7gvzjz!^!j7p'
+
+KAKAO_MAPS_API_KEY = os.getenv('KAKAO_MAPS_API_KEY')
+KAKAO_REST_API_KEY = os.getenv('KAKAO_REST_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,16 +89,25 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+''' SQLite '''
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mydb', #db이름
-        'USER': 'admin',
-        'PASSWORD': 'mingyu5749',
-        'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # AWS 콘솔에서 엔드포인트를 다시 확인하세요.
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+''' MYSQL '''
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'mydb', #db이름
+#         'USER': 'admin',
+#         'PASSWORD': 'mingyu5749',
+#         'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # AWS 콘솔에서 엔드포인트를 다시 확인하세요.
+#         'PORT': '3306',
+#     }
+# }
 
 
 # Password validation

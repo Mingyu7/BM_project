@@ -11,4 +11,4 @@ urllib3==2.5.0
 
 
 #mysqlclient==2.2.7
-#python-dotenv==1.1.1
+python-dotenv==1.1.1
