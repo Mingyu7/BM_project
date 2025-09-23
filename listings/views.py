@@ -61,21 +61,37 @@ def property_create(request):
             # Geocoding logic
             address = form.cleaned_data.get('address')
             if address:
+                print(f"--- Geocoding Start (Debug) ---")
+                print(f"Address to geocode: {address}")
+                
                 try:
                     url = "https://dapi.kakao.com/v2/local/search/address.json"
                     headers = {"Authorization": f"KakaoAK {settings.KAKAO_REST_API_KEY}"}
                     params = {"query": address}
+                    
+                    print(f"Request URL: {url}")
+                    print(f"Request Headers (partial key): {{'Authorization': 'KakaoAK ...{settings.KAKAO_REST_API_KEY[-4:]}'}}")
+                    
                     response = requests.get(url, headers=headers, params=params)
                     response.raise_for_status() # Raise an exception for bad status codes
                     data = response.json()
+                    
+                    print(f"API Response: {data}")
 
                     if data.get("documents"):
                         coords = data["documents"][0]
                         property_instance.latitude = coords["y"]
                         property_instance.longitude = coords["x"]
+                        print(f"Coordinates found: Lat={coords['y']}, Lng={coords['x']}")
+                    else:
+                        print("No documents found in API response.")
+
                 except requests.exceptions.RequestException as e:
-                    # Log the error for the admin to see, but don't crash
                     print(f"Error calling Kakao API: {e}")
+                except Exception as e:
+                    print(f"An unexpected error occurred: {e}")
+                
+                print("--- Geocoding End (Debug) ---")
 
             property_instance.save()
             return redirect('listings:property_detail', pk=property_instance.pk)

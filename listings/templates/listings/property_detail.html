@@ -27,6 +27,7 @@
             </h2>
             <p><strong>지역:</strong> {{ property.region }}</p>
             <p><strong>작성자:</strong> {{ property.author.username }}</p>
+            <p><strong>주소:</strong>{{property.property}}</p>
             {% if property.latitude and property.longitude %}
             <p><strong>위치:</strong> 위도 {{ property.latitude }}, 경도 {{ property.longitude }}</p>
             {% endif %}
@@ -41,12 +42,6 @@
             </p>
             <p><strong>등록일:</strong> {{ property.created_at|date:"Y.m.d" }}</p>
 
-            {% if property.latitude and property.longitude %}
-            <a href="https://www.google.com/maps/search/?api=1&query={{ property.latitude }},{{ property.longitude }}"
-               target="_blank" class="btn btn-outline-primary mt-3">
-                지도에서 보기
-            </a>
-            {% endif %}
             {% if user == property.author %}
                 <a href="{% url 'listings:property_update' property.pk %}" class="btn btn-primary mt-3">수정</a>
                 <a href="{% url 'listings:property_delete' property.pk %}" class="btn btn-danger mt-3">삭제</a>

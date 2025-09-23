@@ -10,71 +10,79 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 # import pymysql
-# pymysql.install_as_MySQLdb() #db 다운
+# pymysql.install_as_MySQLdb() # MySQLdb를 pymysql로 대체하여 사용 (DB 연결)
 
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+# .env 파일에서 환경 변수 로드 (API 키 등 민감 정보 관리)
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# 프로젝트의 기본 디렉토리 경로 설정
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+# --- 빠른 시작 개발 설정 - 프로덕션에 부적합 ---
+# https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# 보안 경고: 프로덕션 환경에서는 SECRET_KEY를 반드시 비밀로 유지해야 합니다!
 SECRET_KEY = 'django-insecure-0#!cu7=0)so64i6@7z!i*ulqq!yfz!$u07ajt@7gvzjz!^!j7p'
 
+# 카카오맵 API 키 (클라이언트 사이드 JavaScript용)
 KAKAO_MAPS_API_KEY = os.getenv('KAKAO_MAPS_API_KEY')
+# 카카오 REST API 키 (서버 사이드 통신용, 지오코딩 등)
 KAKAO_REST_API_KEY = os.getenv('KAKAO_REST_API_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# 보안 경고: 프로덕션 환경에서는 DEBUG를 True로 설정하지 마세요!
 DEBUG = True
 
-""" 접속 호스트 주소"""
+# 허용된 호스트 주소 (요청을 허용할 도메인 목록)
+# 개발 중에는 '*'로 모든 호스트를 허용할 수 있지만, 프로덕션에서는 실제 도메인을 지정해야 합니다.
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition
+# --- 애플리케이션 정의 ---
 
+# 프로젝트에 설치된 Django 앱 목록
 INSTALLED_APPS = [
-    'listings.apps.ListingsConfig',
-    'announcements.apps.AnnouncementsConfig',
-    'bookmarks.apps.BookmarksConfig',
-    'map.apps.MapConfig',
-    'weather.apps.WeatherConfig',
-    'accounts.apps.AccountsConfig',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.humanize',
+    'listings.apps.ListingsConfig',       # 매물 관련 앱
+    'announcements.apps.AnnouncementsConfig', # 공지사항 관련 앱
+    'bookmarks.apps.BookmarksConfig',     # 즐겨찾기 관련 앱
+    'map.apps.MapConfig',                 # 지도 관련 앱
+    'weather.apps.WeatherConfig',         # 날씨 관련 앱
+    'accounts.apps.AccountsConfig',       # 사용자 계정 관련 앱
+    'django.contrib.admin',               # Django 관리자 사이트
+    'django.contrib.auth',                # 인증 시스템
+    'django.contrib.contenttypes',        # 콘텐츠 타입 프레임워크
+    'django.contrib.sessions',            # 세션 프레임워크
+    'django.contrib.messages',            # 메시지 프레임워크
+    'django.contrib.staticfiles',         # 정적 파일 관리
+    'django.contrib.humanize',            # 데이터 포맷팅 (예: 콤마 추가)
 ]
 
+# 미들웨어 설정 (요청/응답 처리 과정에 개입)
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',        # 보안 관련 미들웨어
+    'django.contrib.sessions.middleware.SessionMiddleware', # 세션 관리
+    'django.middleware.common.CommonMiddleware',            # 공통 기능 (예: URL 리다이렉트)
+    'django.middleware.csrf.CsrfViewMiddleware',            # CSRF 보호
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # 사용자 인증
+    'django.contrib.messages.middleware.MessageMiddleware', # 메시지 처리
+    'django.middleware.clickjacking.XFrameOptionsMiddleware', # 클릭재킹 보호
 ]
 
+# URLconf (URL 라우팅 설정 파일)
 ROOT_URLCONF = 'config.urls'
 
+# 템플릿 설정
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [], # 템플릿 파일이 있는 디렉토리 목록 (앱 내 templates 폴더 우선)
+        'APP_DIRS': True, # 각 앱의 templates 디렉토리에서 템플릿을 찾을지 여부
         'OPTIONS': {
-            'context_processors': [
+            'context_processors': [ # 템플릿 컨텍스트에 자동으로 추가될 변수들
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -83,13 +91,14 @@ TEMPLATES = [
     },
 ]
 
+# WSGI 애플리케이션 (웹 서버와 Django 애플리케이션 연결)
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Database
+# --- 데이터베이스 설정 ---
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-''' SQLite '''
+# SQLite 데이터베이스 설정 (주석 처리됨)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -97,66 +106,68 @@ DATABASES = {
     }
 }
 
-''' MYSQL '''
+# MySQL 데이터베이스 설정 (현재 활성화됨)
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'mydb', #db이름
-#         'USER': 'admin',
-#         'PASSWORD': 'mingyu5749',
-#         'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # AWS 콘솔에서 엔드포인트를 다시 확인하세요.
-#         'PORT': '3306',
+#         'NAME': 'mydb', # 데이터베이스 이름
+#         'USER': 'admin', # 데이터베이스 사용자 이름
+#         'PASSWORD': 'mingyu5749', # 데이터베이스 사용자 비밀번호
+#         'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # 데이터베이스 호스트 주소 (AWS RDS 엔드포인트)
+#         'PORT': '3306', # 데이터베이스 포트 번호
 #     }
 # }
 
 
-# Password validation
+# --- 비밀번호 유효성 검사 ---
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', # 사용자 속성 유사성 검사
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', # 최소 길이 검사
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', # 일반적인 비밀번호 검사
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', # 숫자 포함 여부 검사
     },
 ]
 
 
-# Internationalization
+# --- 국제화 설정 ---
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'ko-kr'
+LANGUAGE_CODE = 'ko-kr' # 기본 언어 코드 (한국어)
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul' # 시간대 설정 (서울)
 
-USE_I18N = True
+USE_I18N = True # 국제화 시스템 활성화
 
-USE_TZ = True
+USE_TZ = True # 시간대 지원 활성화
 
 
-# Static files (CSS, JavaScript, Images)
+# --- 정적 파일 (CSS, JavaScript, 이미지) 설정 ---
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/' # 정적 파일에 접근할 URL 접두사
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "static", # 추가 정적 파일 디렉토리 (앱 외부에 있는 정적 파일)
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # collectstatic 명령으로 정적 파일이 모이는 디렉토리
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# --- 미디어 파일 (사용자가 업로드한 파일) 설정 ---
+MEDIA_URL = '/media/' # 미디어 파일에 접근할 URL 접두사
+MEDIA_ROOT = BASE_DIR / 'media' # 미디어 파일이 저장될 실제 파일 시스템 경로
 
-# Default primary key field type
+# 기본 자동 증가 필드 타입 설정
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# 로그인 성공 후 리다이렉트될 URL
 LOGIN_REDIRECT_URL = '/'
+# 로그아웃 성공 후 리다이렉트될 URL
 LOGOUT_REDIRECT_URL = '/'
