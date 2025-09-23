@@ -27,10 +27,10 @@
             </h2>
             <p><strong>지역:</strong> {{ property.region }}</p>
             <p><strong>작성자:</strong> {{ property.author.username }}</p>
-            <p><strong>주소:</strong>{{property.property}}</p>
-            {% if property.latitude and property.longitude %}
-            <p><strong>위치:</strong> 위도 {{ property.latitude }}, 경도 {{ property.longitude }}</p>
-            {% endif %}
+            <p><strong>주소:</strong>{{property.address}}</p>
+<!--            {% if property.latitude and property.longitude %}-->
+<!--            <p><strong>위치:</strong> 위도 {{ property.latitude }}, 경도 {{ property.longitude }}</p>-->
+<!--            {% endif %}-->
             <p><strong>설명:</strong></p>
             <p>{{ property.description|linebreaks }}</p>
             <p>가격:

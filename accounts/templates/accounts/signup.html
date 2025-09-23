@@ -56,8 +56,9 @@ main.container {
                         </div>
 
                         <div class="mb-3">
-                            <label for="phone_number" class="form-label">휴대폰 번호</label>
-                            <input type="text" class="form-control" id="phone_number" placeholder="- 없이 입력">
+                            <label class="form-label">{{ form.phone_number.label }}</label>
+                            {{ form.phone_number }}
+                            {{ form.phone_number.errors }}
                         </div>
 
                         <div class="form-check mb-3">

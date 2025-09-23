@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0#!cu7=0)so64i6@7z!i*ulqq!yfz!$u07ajt@7gvzjz!^!j7p'
 
 # 카카오맵 API 키 (클라이언트 사이드 JavaScript용)
-KAKAO_MAPS_API_KEY = os.getenv('KAKAO_MAPS_API_KEY')
+KAKAO_API_KEY  = os.getenv('KAKAO_MAPS_API_KEY')
 # 카카오 REST API 키 (서버 사이드 통신용, 지오코딩 등)
 KAKAO_REST_API_KEY = os.getenv('KAKAO_REST_API_KEY')
 

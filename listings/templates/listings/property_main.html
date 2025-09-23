@@ -1,18 +1,16 @@
 {% extends 'listings/base.html' %}
 {% load humanize %}
-
+{% block head %}
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+{% endblock %}
 {% block title %}홈 - Better My house{% endblock %}
 
 {% block content %}
-<div class="hero-section text-center text-white py-5 mb-4">
+<div class="hero-section text-center text-white py-5 mb-4" style="user-select: none;">
     <div class="hero-overlay">
         <h1 class="display-5 fw-bold">어떤 집을 찾고 계세요?</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">원룸, 투룸, 아파트, 오피스텔까지. 원하는 매물을 찾아보세요.</p>
-            <button class="btn btn-primary" type="submit">검색</button>
-            </form>
-            
-        </div>
         </div>
     </div>
 </div>

@@ -1,13 +1,15 @@
+import requests  # requests 라이브러리를 올바르게 가져옵니다.
 from django.shortcuts import render, get_object_or_404, redirect
-from django.conf import settings
-import requests
 from listings.models import Property
 from weather import services as weather_services
 from announcements import services as announcement_services
-from announcements.models import Announcement # Import Announcement model
+from announcements.models import Announcement
 from .forms import PropertyForm
 from django.contrib.auth.decorators import login_required
-from bookmarks.models import Favorite # Import Favorite model for bookmarking
+from django.conf import settings
+
+from bookmarks.models import Favorite  # Import Favorite model for bookmarking
+
 
 def property_list(request):
     """
@@ -17,7 +19,7 @@ def property_list(request):
     properties = Property.objects.order_by('-id')[:6]
     weather_list = weather_services.fetch_weather(cities_to_fetch=['서울', '인천', '수원', '천안', '대전'])
     news_list = announcement_services.fetch_news()
-    
+
     # Fetch top 5 announcements
     announcements_list = Announcement.objects.order_by('-created_at')[:5]
 
@@ -30,7 +32,7 @@ def property_list(request):
         'weather_list': weather_list,
         'news_list': news_list,
         'announcements_list': announcements_list,
-        'bookmarked_properties': list(bookmarked_properties), # 템플릿에 전달
+        'bookmarked_properties': list(bookmarked_properties),  # 템플릿에 전달
     }
     return render(request, 'listings/property_main.html', context)
 
@@ -46,9 +48,11 @@ def property_detail(request, pk):
 
     context = {
         'property': property_obj,
-        'is_bookmarked': is_bookmarked, # 템플릿에 전달
+        'is_bookmarked': is_bookmarked,  # 템플릿에 전달
+        'KAKAO_API_KEY': settings.KAKAO_API_KEY,
     }
     return render(request, 'listings/property_detail.html', context)
+
 
 @login_required
 def property_create(request):
@@ -63,19 +67,20 @@ def property_create(request):
             if address:
                 print(f"--- Geocoding Start (Debug) ---")
                 print(f"Address to geocode: {address}")
-                
+
                 try:
                     url = "https://dapi.kakao.com/v2/local/search/address.json"
                     headers = {"Authorization": f"KakaoAK {settings.KAKAO_REST_API_KEY}"}
                     params = {"query": address}
-                    
+
                     print(f"Request URL: {url}")
-                    print(f"Request Headers (partial key): {{'Authorization': 'KakaoAK ...{settings.KAKAO_REST_API_KEY[-4:]}'}}")
-                    
+                    print(
+                        f"Request Headers (partial key): {{'Authorization': 'KakaoAK ...{settings.KAKAO_REST_API_KEY[-4:]}'}}")
+
                     response = requests.get(url, headers=headers, params=params)
-                    response.raise_for_status() # Raise an exception for bad status codes
+                    response.raise_for_status()  # Raise an exception for bad status codes
                     data = response.json()
-                    
+
                     print(f"API Response: {data}")
 
                     if data.get("documents"):
@@ -90,20 +95,21 @@ def property_create(request):
                     print(f"Error calling Kakao API: {e}")
                 except Exception as e:
                     print(f"An unexpected error occurred: {e}")
-                
+
                 print("--- Geocoding End (Debug) ---")
 
             property_instance.save()
             return redirect('listings:property_detail', pk=property_instance.pk)
     else:
         form = PropertyForm()
-    return render(request, 'listings/property_form.html', {'form': form})
+    return render(request, 'listings/property_form.html', {'form': form, 'KAKAO_API_KEY': settings.KAKAO_API_KEY})
 
 
 @login_required
 def property_update(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
     if property_obj.author != request.user:
+        # You can redirect to a 'permission denied' page or just the detail page
         return redirect('listings:property_detail', pk=pk)
 
     if request.method == 'POST':
@@ -117,13 +123,14 @@ def property_update(request, pk):
                 url = "https://dapi.kakao.com/v2/local/search/address.json"
                 headers = {"Authorization": f"KakaoAK {settings.KAKAO_REST_API_KEY}"}
                 params = {"query": address}
-                response = requests.get(url, headers=headers, params=params).json()
+                # from django.contrib.sites import requests # <-- 이 줄을 삭제합니다.
+                response = requests.get(url, headers=headers, params=params).json()  # <-- 올바른 requests를 사용합니다.
 
                 if response.get("documents"):
                     coords = response["documents"][0]
                     property_instance.latitude = coords["y"]
                     property_instance.longitude = coords["x"]
-                else: # If geocoding fails, maybe clear the coordinates?
+                else:  # If geocoding fails, maybe clear the coordinates?
                     property_instance.latitude = None
                     property_instance.longitude = None
 
@@ -131,7 +138,7 @@ def property_update(request, pk):
             return redirect('listings:property_detail', pk=pk)
     else:
         form = PropertyForm(instance=property_obj)
-    return render(request, 'listings/property_form.html', {'form': form})
+    return render(request, 'listings/property_form.html', {'form': form, 'KAKAO_API_KEY': settings.KAKAO_API_KEY})
 
 
 @login_required
@@ -147,7 +154,7 @@ def property_delete(request, pk):
 
 
 from django.contrib.auth.decorators import login_required
-from bookmarks.models import Favorite # Import Favorite model
+from bookmarks.models import Favorite  # Import Favorite model
 
 
 def property_index(request):
@@ -158,7 +165,7 @@ def property_index(request):
         properties = Property.objects.all().order_by('-id')
 
     regions = Property.REGION_CHOICES
-    
+
     bookmarked_properties = []
     if request.user.is_authenticated:
         bookmarked_properties = Favorite.objects.filter(user=request.user).values_list('property__id', flat=True)
@@ -167,12 +174,13 @@ def property_index(request):
         'properties': properties,
         'regions': regions,
         'selected_region': region,
-        'bookmarked_properties': list(bookmarked_properties), # 템플릿에 전달
+        'bookmarked_properties': list(bookmarked_properties),  # 템플릿에 전달
     }
 
     return render(request, 'listings/property_list.html', context)
 
-#''로 접속했을때 'listings'로 리다이렉트
+
+# ''로 접속했을때 'listings'로 리다이렉트
 def myhome(request):
     return redirect('/listings/')
     return render(request, 'listings/property_list.html', context)
