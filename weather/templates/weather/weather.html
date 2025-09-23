@@ -16,6 +16,26 @@
     .table-hover > tbody > tr:hover > * {
         background-color: #EFEBE9; /* A slightly darker brown for hover */
     }
+    .container.mt-5 {
+        margin-top: 1rem !important;
+    }
+    .display-4 {
+        font-size: 2rem;
+    }
+    .lead {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    .table td, .table th {
+        padding: 0.4rem;
+    }
+    .fa-2x {
+        font-size: 1.5em;
+    }
+    .temp.h5 {
+        font-size: 1rem;
+        margin-bottom: 0;
+    }
 </style>
 <div class="container mt-5">
     <div class="text-center mb-4">
@@ -23,38 +43,77 @@
         <p class="lead">대한민국 주요 도시의 실시간 날씨 정보를 확인하세요.</p>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover text-center align-middle">
-            <thead>
-                <tr>
-                    <th scope="col">도시</th>
-                    <th scope="col">날씨</th>
-                    <th scope="col">기온</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if weather_list %}
-                    {% for weather in weather_list %}
-                    <tr>
-                        <td><strong>{{ weather.location }}</strong></td>
-                        <td>
-                            <i class="{{ weather.icon }} fa-2x"></i>
-                            <span class="ms-2">{{ weather.condition }}</span>
-                        </td>
-                        <td><span class="temp h5">{{ weather.temp }}</span></td>
-                    </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr>
-                        <td colspan="3">
-                            <div class="alert alert-warning text-center my-3" role="alert">
-                                날씨 정보를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.
-                            </div>
-                        </td>
-                    </tr>
-                {% endif %}
-            </tbody>
-        </table>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-hover text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">도시</th>
+                            <th scope="col">날씨</th>
+                            <th scope="col">기온</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if weather_list %}
+                            {% for weather in weather_list|slice:":9" %}
+                            <tr>
+                                <td><strong>{{ weather.location }}</strong></td>
+                                <td>
+                                    <i class="{{ weather.icon }} fa-2x"></i>
+                                    <span class="ms-2">{{ weather.condition }}</span>
+                                </td>
+                                <td><span class="temp h5">{{ weather.temp }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">
+                                    <div class="alert alert-warning text-center my-3" role="alert">
+                                        날씨 정보를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-hover text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">도시</th>
+                            <th scope="col">날씨</th>
+                            <th scope="col">기온</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if weather_list %}
+                            {% for weather in weather_list|slice:"9:" %}
+                            <tr>
+                                <td><strong>{{ weather.location }}</strong></td>
+                                <td>
+                                    <i class="{{ weather.icon }} fa-2x"></i>
+                                    <span class="ms-2">{{ weather.condition }}</span>
+                                </td>
+                                <td><span class="temp h5">{{ weather.temp }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">
+                                    <div class="alert alert-warning text-center my-3" role="alert">
+                                        날씨 정보를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
