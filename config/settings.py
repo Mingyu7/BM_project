@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# sqllite
+ #sqllite
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -91,16 +91,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 
+
 #mysql
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mydb', #db이름
-        'USER': 'admin',
-        'PASSWORD': 'mingyu5749',
-        'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # AWS 콘솔에서 엔드포인트를 다시 확인하세요.
-        'PORT': '3306',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.mysql',
+       'NAME': 'mydb', #db이름
+       'USER': 'admin',
+       'PASSWORD': 'mingyu5749',
+       'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # AWS 콘솔에서 엔드포인트를 다시 확인하세요.
+       'PORT': '3306',
+   }
 }
 
 
