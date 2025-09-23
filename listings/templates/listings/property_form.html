@@ -6,26 +6,68 @@
         <div class="col-md-8">
             <div class="property-form-container p-4 border rounded shadow-sm">
                 <h2 class="mb-4">매물 등록</h2>
-
-                <button type="button" id="btn-set-coords" class="btn btn-secondary mb-3" onclick="modalMap()">
-                    지도에서 위치 선택
-                </button>
-
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {% for field in form %}
-                        {% if field.name != "latitude" and field.name != "longitude" %}
-                            <div class="mb-3">
-                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                {{ field }}
-                                {% for error in field.errors %}
-                                    <div class="alert alert-danger mt-1">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ field }} {# 숨겨진 input #}
-                        {% endif %}
-                    {% endfor %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
+                        {{ form.title }}
+                        {% for error in form.title.errors %}<div class="alert alert-danger mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.address.id_for_label }}" class="form-label">{{ form.address.label }}</label>
+                        <div class="input-group">
+                            {{ form.address }}
+                            <button type="button" class="btn btn-outline-secondary" onclick="openDaumPostcode()">주소 검색</button>
+                        </div>
+                        {% for error in form.address.errors %}<div class="alert alert-danger mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.latitude.id_for_label }}" class="form-label">{{ form.latitude.label }}</label>
+                        {{ form.latitude }}
+                        {% for error in form.latitude.errors %}<div class="alert alert-danger mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.longitude.id_for_label }}" class="form-label">{{ form.longitude.label }}</label>
+                        {{ form.longitude }}
+                        {% for error in form.longitude.errors %}<div class="alert alert-danger mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.region.id_for_label }}" class="form-label">{{ form.region.label }}</label>
+                        {{ form.region }}
+                        {% for error in form.region.errors %}<div class="alert alert-danger mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                        {{ form.description }}
+                        {% for error in form.description.errors %}<div class="alert alert-danger mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.image.id_for_label }}" class="form-label">{{ form.image.label }}</label>
+                        {{ form.image }}
+                        {% for error in form.image.errors %}<div class="alert alert-danger mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.price.id_for_label }}" class="form-label">{{ form.price.label }}</label>
+                        {{ form.price }}
+                        {% for error in form.price.errors %}<div class="alert alert-danger mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
                     <button type="submit" class="btn btn-primary w-100">등록</button>
                 </form>
             </div>
@@ -33,86 +75,15 @@
     </div>
 </div>
 
-<!-- 모달 -->
-<div id="modal-container" class="modal-container" style="
-    position: fixed; width: 100%; height: 100%; left: 0; top: 0; z-index: 999;
-    display: none; background-color: rgba(0,0,0,0.4);
-">
-    <div id="map-in-modal" class="map-in-modal" style="
-        position: absolute; left: 10%; top: 10%; width: 80%; height: 80%; background: #fff; border-radius: 8px; overflow: hidden;
-    ">
-        <!-- 상단 바: 좌표 + 닫기 -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #f5f5f5; border-bottom: 1px solid #ddd;">
-            <div id="coords-display" style="font-weight: bold; color: #333;">위도/경도: 없음</div>
-            <button id="modal-close-btn" style="
-                background: #f44336; color: #fff; border: none;
-                border-radius: 50%; width: 30px; height: 30px;
-                font-weight: bold; cursor: pointer;
-            ">X</button>
-        </div>
-        <div id="map" style="width:100%; height:calc(100% - 40px);"></div>
-    </div>
-</div>
-
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ KAKAO_API_KEY }}"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-let marker;
-let modal = document.getElementById('modal-container');
-let mapInModal = document.getElementById('map-in-modal');
-let mapContainer = document.getElementById('map');
-let coordsDisplay = document.getElementById('coords-display');
-let closeBtn = document.getElementById('modal-close-btn');
-
-let mapOption = {
-    center: new kakao.maps.LatLng(37.566789, 126.978440),
-    level: 5
-};
-let map = new kakao.maps.Map(mapContainer, mapOption);
-
-// 모달 열기
-function showModal() {
-    modal.style.display = "block";
-
-    // 지도 클릭 이벤트
-    kakao.maps.event.addListener(map, 'click', clickMarker);
-
-    // 모달 닫기 버튼
-    closeBtn.addEventListener('click', hideModal);
-
-    // 모달 외부 클릭 시 닫기
-    modal.addEventListener('click', hideModal);
-    mapInModal.addEventListener('click', function(e){ e.stopPropagation(); });
-
-    // 지도 재배치
-    map.relayout();
-}
-
-// 모달 닫기
-function hideModal() {
-    modal.style.display = 'none';
-    if (marker) marker.setMap(null);
-}
-
-// 지도 클릭 → 마커 생성 + 좌표 표시 + hidden input
-function clickMarker(mouseEvent) {
-    let latlng = mouseEvent.latLng;
-    let lat = latlng.getLat();
-    let lng = latlng.getLng();
-
-    if (marker) marker.setMap(null);
-
-    marker = new kakao.maps.Marker({ position: latlng });
-    marker.setMap(map);
-
-    coordsDisplay.textContent = `위도: ${lat.toFixed(8)}, 경도: ${lng.toFixed(8)}`;
-
-    document.getElementById("id_latitude").value = lat.toFixed(8);
-    document.getElementById("id_longitude").value = lng.toFixed(8);
-}
-
-// 지도 모달 열기
-function modalMap() {
-    showModal();
+function openDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            var addr = data.address; // 최종 주소 변수
+            document.getElementById("address-input").value = addr;
+        }
+    }).open();
 }
 </script>
 {% endblock %}

@@ -11,13 +11,6 @@
         <h1 class="display-5 fw-bold">어떤 집을 찾고 계세요?</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">원룸, 투룸, 아파트, 오피스텔까지. 원하는 매물을 찾아보세요.</p>
-            <form action="{% url 'listings:property_index' %}" method="GET" class="d-flex justify-content-center" style="margin:0;">
-                <input type="text" name="search" placeholder="원하시는 지역명, 지하철역, 단지명(아파트명)을 입력해주세요."
-                       style="padding:10px; min-width: 500px; height:60px; border:none; margin-right:0; border-top-left-radius:12px; border-bottom-left-radius:12px;" autocomplete='off' spellcheck="false">
-                <div style="width:60px; height:60px; display:flex; align-items:center; justify-content:center; cursor:pointer; margin-left:0; background-color:#8D6E63; border-top-right-radius:12px; border-bottom-right-radius:12px;">
-                    <img src="./static/search.png" alt="검색" style="width:60%; height:60%;">
-                </div>
-            </form>
         </div>
     </div>
 </div>
