@@ -62,6 +62,7 @@ class CustomLoginView(LoginView):
 
 class SignUpForm(UserCreationForm):
     name = forms.CharField(max_length=100, label='이름', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    phone_number = forms.CharField(max_length=20, label='전화번호', required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     terms_agreement = forms.BooleanField(
         label='이용약관 및 개인정보 처리방침에 동의합니다.',
         required=True,
@@ -70,7 +71,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('name', 'username')
+        fields = ('username',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -89,8 +90,13 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            # Create the UserProfile with the name and phone_number from the form
+            UserProfile.objects.create(user=user, name=form.cleaned_data['name'], phone_number=form.cleaned_data.get('phone_number'))
             return redirect('accounts:login')
+        else:
+            # Print form errors to the console for debugging
+            print("Form is not valid. Errors:", form.errors)
     else:
         form = SignUpForm()
     return render(request, 'accounts/signup.html', {'form': form})
