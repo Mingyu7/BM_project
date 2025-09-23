@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-# import pymysql
-# pymysql.install_as_MySQLdb() # MySQLdb를 pymysql로 대체하여 사용 (DB 연결)
+import pymysql
+pymysql.install_as_MySQLdb() # MySQLdb를 pymysql로 대체하여 사용 (DB 연결)
 
 import os
 from pathlib import Path
@@ -99,24 +99,24 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # SQLite 데이터베이스 설정 (주석 처리됨)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# MySQL 데이터베이스 설정 (현재 활성화됨)
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'mydb', # 데이터베이스 이름
-#         'USER': 'admin', # 데이터베이스 사용자 이름
-#         'PASSWORD': 'mingyu5749', # 데이터베이스 사용자 비밀번호
-#         'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # 데이터베이스 호스트 주소 (AWS RDS 엔드포인트)
-#         'PORT': '3306', # 데이터베이스 포트 번호
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# MySQL 데이터베이스 설정 (현재 활성화됨)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mydb', # 데이터베이스 이름
+        'USER': 'admin', # 데이터베이스 사용자 이름
+        'PASSWORD': 'mingyu5749', # 데이터베이스 사용자 비밀번호
+        'HOST': 'database-2.ct884c60cwin.ap-northeast-2.rds.amazonaws.com', # 데이터베이스 호스트 주소 (AWS RDS 엔드포인트)
+        'PORT': '3306', # 데이터베이스 포트 번호
+    }
+}
 
 
 # --- 비밀번호 유효성 검사 ---
