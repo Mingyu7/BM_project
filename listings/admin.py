@@ -3,6 +3,6 @@ from .models import Property
 
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
-    list_display = ('title', 'region', 'price', 'created_at')
+    list_display = ('title', 'region', 'price', 'latitude', 'longitude', 'created_at')
     list_filter = ('region',)
     search_fields = ('title', 'description')

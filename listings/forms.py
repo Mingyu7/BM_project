@@ -4,9 +4,10 @@ from .models import Property
 class PropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = ['title', 'region', 'latitude', 'longitude', 'description', 'image', 'price']
+        fields = ['title', 'address', 'region', 'latitude', 'longitude', 'description', 'image', 'price']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control', 'id': 'address-input'}),
             'region': forms.Select(attrs={'class': 'form-select'}),
             'latitude': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
             'longitude': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),

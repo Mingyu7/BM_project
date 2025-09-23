@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.conf import settings
+import requests
 from listings.models import Property
 from weather import services as weather_services
 from announcements import services as announcement_services
@@ -53,10 +55,30 @@ def property_create(request):
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES)
         if form.is_valid():
-            property = form.save(commit=False)
-            property.author = request.user
-            property.save()
-            return redirect('listings:property_detail', pk=property.pk)
+            property_instance = form.save(commit=False)
+            property_instance.author = request.user
+
+            # Geocoding logic
+            address = form.cleaned_data.get('address')
+            if address:
+                try:
+                    url = "https://dapi.kakao.com/v2/local/search/address.json"
+                    headers = {"Authorization": f"KakaoAK {settings.KAKAO_REST_API_KEY}"}
+                    params = {"query": address}
+                    response = requests.get(url, headers=headers, params=params)
+                    response.raise_for_status() # Raise an exception for bad status codes
+                    data = response.json()
+
+                    if data.get("documents"):
+                        coords = data["documents"][0]
+                        property_instance.latitude = coords["y"]
+                        property_instance.longitude = coords["x"]
+                except requests.exceptions.RequestException as e:
+                    # Log the error for the admin to see, but don't crash
+                    print(f"Error calling Kakao API: {e}")
+
+            property_instance.save()
+            return redirect('listings:property_detail', pk=property_instance.pk)
     else:
         form = PropertyForm()
     return render(request, 'listings/property_form.html', {'form': form})
@@ -66,13 +88,30 @@ def property_create(request):
 def property_update(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
     if property_obj.author != request.user:
-        # You can redirect to a 'permission denied' page or just the detail page
         return redirect('listings:property_detail', pk=pk)
 
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES, instance=property_obj)
         if form.is_valid():
-            form.save()
+            property_instance = form.save(commit=False)
+
+            # Geocoding logic
+            address = form.cleaned_data.get('address')
+            if address:
+                url = "https://dapi.kakao.com/v2/local/search/address.json"
+                headers = {"Authorization": f"KakaoAK {settings.KAKAO_REST_API_KEY}"}
+                params = {"query": address}
+                response = requests.get(url, headers=headers, params=params).json()
+
+                if response.get("documents"):
+                    coords = response["documents"][0]
+                    property_instance.latitude = coords["y"]
+                    property_instance.longitude = coords["x"]
+                else: # If geocoding fails, maybe clear the coordinates?
+                    property_instance.latitude = None
+                    property_instance.longitude = None
+
+            property_instance.save()
             return redirect('listings:property_detail', pk=pk)
     else:
         form = PropertyForm(instance=property_obj)
